@@ -3,16 +3,11 @@
   "short_name": "Footnotes",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#FAF7F2",
-  "theme_color": "#FAF7F2",
+  "background_color": "#E7E2D6",
+  "theme_color": "#E7E2D6",
   "icons": [
     {
       "src": "./icon.png",
-    "sizes": "512x512",
-    "type": "image/png"
-    },
-    {
-      "src": "https://via.placeholder.com/512/1C1C1A/FAF7F2?text=F",
       "sizes": "512x512",
       "type": "image/png"
     }

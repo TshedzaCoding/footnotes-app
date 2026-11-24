@@ -14,26 +14,18 @@
     <title>Footnotes</title>
     <style>
       :root {
-        --bg: #faf7f2;
-        --surface: #fffdf9;
-        --text: #1c1c1a;
-        --muted: #737068;
-        --hairline: rgba(0, 0, 0, 0.09);
-        --accent: #b85738;
+        --bg: #e7e2d6;
+        --surface: #efece3;
+        --pill: #dcd5c7;
+        --text: #221e1a;
+        --muted: #766f64;
+        --hairline: rgba(58, 49, 38, 0.14);
+        --accent: #584c3f;
         --serif: Georgia, "New York", "Times New Roman", serif;
-        --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-        --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #141414;
-          --surface: #1f1f1f;
-          --text: #f0ede6;
-          --muted: #99968e;
-          --hairline: rgba(255, 255, 255, 0.11);
-          --accent: #e08c66;
-        }
+        --mono:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       }
 
       * {
@@ -47,48 +39,89 @@
         color: var(--text);
         font-family: var(--sans);
         padding-top: env(safe-area-inset-top);
-        padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        padding-bottom: calc(96px + env(safe-area-inset-bottom));
         min-height: 100vh;
       }
 
+      /* Header */
       header {
         position: sticky;
         top: 0;
-        z-index: 10;
-        background: var(--bg);
-        border-bottom: 1px solid var(--hairline);
-        padding: 16px 20px 12px;
+        z-index: 15;
+        background: rgba(231, 226, 214, 0.94);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 14px 20px 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
 
-      header h1 {
-        margin: 0;
-        font-family: var(--serif);
-        font-size: 26px;
-        font-weight: 600;
-        letter-spacing: -0.3px;
+      .brand-cluster {
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
 
-      .icon-btn {
-        background: none;
-        border: 1px solid var(--hairline);
-        color: var(--text);
+      .brand-badge {
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
+        background: var(--pill);
+        border: 1px solid var(--hairline);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: var(--text);
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.2px;
+        line-height: 1.2;
+      }
+
+      .header-sub {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 1px;
+      }
+
+      .pill-controls {
+        display: flex;
+        align-items: center;
+        background: var(--pill);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 3px;
+      }
+
+      .pill-controls button {
+        background: none;
+        border: none;
+        color: var(--text);
+        padding: 6px 11px;
+        font-size: 13px;
+        cursor: pointer;
+        border-radius: 999px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
+      }
+
+      .pill-controls .sep {
+        width: 1px;
+        height: 16px;
+        background: var(--hairline);
       }
 
       main {
         max-width: 640px;
         margin: 0 auto;
-        padding: 18px 20px;
+        padding: 6px 20px 20px;
       }
 
       .view {
@@ -101,15 +134,15 @@
       .card {
         background: var(--surface);
         border: 1px solid var(--hairline);
-        border-radius: 14px;
+        border-radius: 16px;
         padding: 16px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
       }
 
       .row-between {
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
+        align-items: center;
       }
 
       .serif {
@@ -122,6 +155,471 @@
         color: var(--muted);
       }
 
+      /* ================= JOURNAL (FIELD NOTES STYLE) ================= */
+      .date-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 6px 0 14px;
+      }
+
+      .month-btn {
+        background: none;
+        border: none;
+        color: var(--text);
+        font-family: var(--sans);
+        font-size: 14px;
+        font-weight: 500;
+        padding: 6px 4px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        flex-shrink: 0;
+      }
+
+      .days-row {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        flex: 1;
+        text-align: center;
+        gap: 2px;
+      }
+
+      .day-pill {
+        background: none;
+        border: 1.5px solid transparent;
+        border-radius: 12px;
+        padding: 6px 0 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        color: var(--muted);
+        font-family: var(--sans);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .day-pill.selected {
+        background: var(--pill);
+        border-color: var(--accent);
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .day-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: transparent;
+      }
+
+      .day-pill.has-notes .day-dot {
+        background: var(--text);
+      }
+
+      .day-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 4px 0 18px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+      }
+
+      .day-divider::before,
+      .day-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--hairline);
+      }
+
+      /* Inline Canvas Composer */
+      .timeline-row {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        gap: 10px;
+        margin-bottom: 24px;
+        align-items: start;
+      }
+
+      .time-col {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+        padding-top: 3px;
+      }
+
+      .canvas-editor {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        resize: none;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 16px;
+        line-height: 1.6;
+        padding: 0;
+        min-height: 54px;
+      }
+
+      .canvas-editor::placeholder {
+        color: var(--muted);
+        opacity: 0.75;
+      }
+
+      .canvas-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed var(--hairline);
+      }
+
+      .canvas-photo-preview {
+        position: relative;
+        display: inline-block;
+        margin: 8px 0 4px;
+      }
+
+      .canvas-photo-preview img,
+      .entry-photo {
+        display: block;
+        width: 100%;
+        max-width: 270px;
+        border-radius: 14px;
+        border: 1px solid var(--hairline);
+        margin-bottom: 10px;
+      }
+
+      .remove-photo-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(34, 30, 26, 0.78);
+        color: #fff;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .entry-body {
+        font-family: var(--mono);
+        font-size: 15px;
+        line-height: 1.6;
+        color: var(--text);
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .entry-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 10px;
+      }
+
+      .entry-actions button {
+        background: none;
+        border: none;
+        padding: 2px 0;
+        color: var(--muted);
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* Bottom Floating Field Notes Bar */
+      .journal-bottom-bar {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: calc(68px + env(safe-area-inset-bottom));
+        width: calc(100% - 40px);
+        max-width: 600px;
+        display: none;
+        align-items: center;
+        gap: 10px;
+        z-index: 18;
+      }
+
+      .journal-bottom-bar.show {
+        display: flex;
+      }
+
+      .new-note-pill {
+        flex: 1;
+        height: 48px;
+        border-radius: 999px;
+        border: none;
+        background: var(--accent);
+        color: #faf7f0;
+        font-family: var(--sans);
+        font-size: 15px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 6px 18px rgba(34, 30, 26, 0.16);
+        cursor: pointer;
+      }
+
+      .search-circle-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid var(--hairline);
+        background: var(--pill);
+        color: var(--text);
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(34, 30, 26, 0.08);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .search-bar-inline {
+        display: none;
+        margin-bottom: 14px;
+      }
+
+      .search-bar-inline.open {
+        display: block;
+      }
+
+      /* ================= TASKS + SNOOPY ANIMATION ================= */
+      .snoopy-card {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        padding: 16px 16px 12px;
+        margin-bottom: 14px;
+      }
+
+      .snoopy-stage {
+        position: relative;
+        height: 76px;
+        margin-top: 10px;
+        overflow: hidden;
+      }
+
+      .snoopy-ground {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 8px;
+        height: 2px;
+        background: repeating-linear-gradient(
+          to right,
+          var(--accent) 0px,
+          var(--accent) 6px,
+          transparent 6px,
+          transparent 11px
+        );
+        opacity: 0.45;
+      }
+
+      .snoopy-track-fill {
+        position: absolute;
+        left: 12px;
+        bottom: 8px;
+        height: 2px;
+        background: var(--accent);
+        transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .doghouse-goal {
+        position: absolute;
+        right: 10px;
+        bottom: 8px;
+        width: 46px;
+        height: 54px;
+      }
+
+      .snoopy-walker {
+        position: absolute;
+        bottom: 7px;
+        left: 8px;
+        width: 46px;
+        height: 52px;
+        transition: left 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: bottom center;
+      }
+
+      .snoopy-walker.walking {
+        animation: snoopyStride 0.45s ease-in-out 2;
+      }
+
+      .snoopy-walker.celebrate {
+        animation: snoopyHappy 0.6s ease-in-out infinite alternate;
+      }
+
+      .snoopy-heart {
+        position: absolute;
+        top: -8px;
+        right: 2px;
+        font-size: 13px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .snoopy-walker.celebrate .snoopy-heart {
+        opacity: 1;
+      }
+
+      @keyframes snoopyStride {
+        0% {
+          transform: translateY(0) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-5px) rotate(-4deg);
+        }
+        50% {
+          transform: translateY(0) rotate(2deg);
+        }
+        75% {
+          transform: translateY(-4px) rotate(-3deg);
+        }
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+      }
+
+      @keyframes snoopyHappy {
+        0% {
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          transform: translateY(-6px) scale(1.04);
+        }
+      }
+
+      /* Inline Quick-Add Bar */
+      .quick-add-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        padding: 6px 8px 6px 14px;
+        margin-bottom: 14px;
+      }
+
+      .quick-add-bar input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 16px;
+        padding: 6px 0;
+      }
+
+      .quick-add-bar input::placeholder {
+        color: var(--muted);
+      }
+
+      .quick-plus-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        border: none;
+        background: var(--accent);
+        color: #faf7f0;
+        font-size: 20px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .segmented {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        background: var(--pill);
+        padding: 3px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+      }
+
+      .segmented button {
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        padding: 7px 0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      .segmented button.active {
+        background: var(--surface);
+        color: var(--text);
+      }
+
+      .task-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 4px;
+        border-bottom: 1px solid var(--hairline);
+      }
+
+      .check-circle {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 1.5px solid var(--accent);
+        background: none;
+        flex-shrink: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #faf7f0;
+        font-size: 12px;
+      }
+
+      .check-circle.done {
+        background: var(--accent);
+      }
+
+      .task-title {
+        font-family: var(--mono);
+        font-size: 15px;
+        flex: 1;
+        word-break: break-word;
+      }
+
+      .task-title.done {
+        text-decoration: line-through;
+        color: var(--muted);
+      }
+
+      /* ================= HABITS ================= */
       .progress-track {
         height: 6px;
         background: var(--hairline);
@@ -137,7 +635,6 @@
         transition: width 0.25s ease;
       }
 
-      /* Habits */
       .week-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -166,130 +663,18 @@
       .day-btn.done {
         background: var(--accent);
         border-color: var(--accent);
-        color: #fff;
+        color: #faf7f0;
       }
 
-      /* Tasks */
-      .segmented {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        background: var(--hairline);
-        padding: 3px;
-        border-radius: 10px;
-        margin-bottom: 16px;
-      }
-
-      .segmented button {
-        border: none;
-        background: transparent;
-        color: var(--muted);
-        padding: 7px 0;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-      }
-
-      .segmented button.active {
-        background: var(--surface);
-        color: var(--text);
-      }
-
-      .task-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 14px 0;
-        border-bottom: 1px solid var(--hairline);
-      }
-
-      .check-circle {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        border: 1.5px solid var(--muted);
-        background: none;
-        flex-shrink: 0;
-        margin-top: 2px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 12px;
-      }
-
-      .check-circle.done {
-        background: var(--accent);
-        border-color: var(--accent);
-      }
-
-      .task-title.done {
-        text-decoration: line-through;
-        color: var(--muted);
-      }
-
-      /* Journal (Footnotes style) */
-      .journal-entry {
-        padding: 20px 0;
-        border-bottom: 1px solid var(--hairline);
-        cursor: pointer;
-      }
-
-      .journal-date {
-        font-family: var(--mono);
-        font-size: 11px;
-        letter-spacing: 0.7px;
-        color: var(--muted);
-        text-transform: uppercase;
-        margin-bottom: 6px;
-      }
-
-      .journal-title {
-        font-family: var(--serif);
-        font-size: 19px;
-        font-weight: 600;
-        margin: 0 0 6px;
-      }
-
-      .journal-body {
-        font-family: var(--serif);
-        font-size: 16px;
-        line-height: 1.6;
-        margin: 0;
-        white-space: pre-wrap;
-        opacity: 0.92;
-      }
-
-      .fab {
-        position: fixed;
-        right: 20px;
-        bottom: calc(82px + env(safe-area-inset-bottom));
-        width: 54px;
-        height: 54px;
-        border-radius: 50%;
-        border: none;
-        background: var(--text);
-        color: var(--bg);
-        font-size: 24px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .fab.show {
-        display: flex;
-      }
-
-      /* Bottom Tab Bar */
+      /* Bottom Tab Navigation */
       nav.tabs {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        background: var(--surface);
+        background: rgba(239, 236, 227, 0.96);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         border-top: 1px solid var(--hairline);
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -300,78 +685,36 @@
       nav.tabs button {
         background: none;
         border: none;
-        padding: 12px 0 10px;
+        padding: 10px 0 8px;
         color: var(--muted);
         font-size: 11px;
         font-weight: 500;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         cursor: pointer;
       }
 
       nav.tabs button.active {
         color: var(--accent);
+        font-weight: 600;
       }
+
       nav.tabs button span.icon {
-        font-size: 18px;
+        font-size: 17px;
       }
 
-      /* Modal */
-      .modal-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        display: none;
-        align-items: flex-end;
-        justify-content: center;
-        z-index: 50;
-      }
-
-      .modal-backdrop.open {
-        display: flex;
-      }
-
-      .modal {
-        background: var(--bg);
-        width: 100%;
-        max-width: 640px;
-        border-radius: 20px 20px 0 0;
-        padding: 20px 20px calc(24px + env(safe-area-inset-bottom));
-        max-height: 90vh;
-        overflow-y: auto;
-      }
-
-      input[type="text"],
-      textarea {
-        width: 100%;
-        background: var(--surface);
-        color: var(--text);
-        border: 1px solid var(--hairline);
-        border-radius: 10px;
-        padding: 12px;
-        font-size: 16px;
-        font-family: var(--serif);
-        margin-bottom: 12px;
-      }
-
-      textarea {
-        min-height: 180px;
-        resize: vertical;
-        line-height: 1.6;
-      }
-
+      /* Shared Buttons & Backup Drawer */
       .btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #faf7f0;
         border: none;
-        border-radius: 10px;
-        padding: 12px 18px;
-        font-size: 15px;
-        font-weight: 600;
+        border-radius: 999px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 500;
         cursor: pointer;
-        width: 100%;
       }
 
       .btn-ghost {
@@ -380,37 +723,342 @@
         color: var(--muted);
         font-size: 14px;
         cursor: pointer;
-        padding: 6px;
+        padding: 4px 8px;
       }
 
       .btn-danger {
         background: none;
         border: none;
-        color: #c94a4a;
+        color: #9e3b33;
         font-size: 13px;
         cursor: pointer;
       }
 
       .empty {
         text-align: center;
-        padding: 56px 12px;
-        font-family: var(--serif);
+        padding: 38px 12px;
+        font-family: var(--mono);
+        font-size: 13px;
         color: var(--muted);
+      }
+
+      .backup-panel {
+        display: none;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        padding: 16px;
+        margin: 8px auto 12px;
+        width: calc(100% - 40px);
+        max-width: 600px;
+      }
+
+      .backup-panel.open {
+        display: block;
       }
     </style>
   </head>
   <body>
     <header>
-      <h1 id="pageTitle">Habits</h1>
-      <div style="display: flex; gap: 8px">
-        <button class="icon-btn" id="backupBtn" title="Backup">⚙</button>
-        <button class="icon-btn" id="addBtn" title="Add">+</button>
+      <div class="brand-cluster">
+        <div class="brand-badge" id="headerIcon">📖</div>
+        <div>
+          <h1 id="pageTitle">Field Notes</h1>
+          <div class="header-sub" id="pageSubtitle">0 notes</div>
+        </div>
+      </div>
+
+      <div class="pill-controls">
+        <button id="todayJumpBtn" title="Jump to Today">Today</button>
+        <span class="sep"></span>
+        <button id="backupToggleBtn" title="Backup & Restore">•••</button>
       </div>
     </header>
 
+    <!-- Inline Backup Drawer -->
+    <div class="backup-panel" id="backupPanel">
+      <div class="row-between" style="margin-bottom: 8px">
+        <strong style="font-size: 14px">Backup & Restore (.json)</strong>
+        <button class="btn-ghost" onclick="toggleBackupPanel()">Close</button>
+      </div>
+      <p class="muted" style="font-size: 12px; margin: 0 0 12px">
+        All notes, tasks, and habits stay offline on your iPhone.
+      </p>
+      <div
+        style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap"
+      >
+        <button class="btn-primary" onclick="exportData()">
+          Export Backup
+        </button>
+        <label
+          class="btn-ghost"
+          style="
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-size: 13px;
+            color: var(--text);
+          "
+        >
+          Import File
+          <input
+            type="file"
+            accept=".json"
+            style="display: none"
+            onchange="importData(event)"
+          />
+        </label>
+      </div>
+    </div>
+
     <main>
-      <!-- HABITS VIEW -->
-      <section id="view-habits" class="view active">
+      <!-- ================= JOURNAL VIEW (FIELD NOTES) ================= -->
+      <section id="view-journal" class="view active">
+        <div class="date-strip">
+          <button class="month-btn" id="monthLabelBtn" title="Jump to Today">
+            Nov ▾
+          </button>
+          <div class="days-row" id="journalDaysRow"></div>
+        </div>
+
+        <div class="search-bar-inline" id="journalSearchBar">
+          <div class="quick-add-bar" style="margin-bottom: 0">
+            <input
+              type="text"
+              id="journalSearchInput"
+              placeholder="Search all notes..."
+              oninput="renderJournal()"
+            />
+            <button class="btn-ghost" onclick="clearJournalSearch()">✕</button>
+          </div>
+        </div>
+
+        <div class="day-divider" id="journalDayDivider">TODAY</div>
+
+        <!-- Inline Canvas Composer (Write directly on the paper) -->
+        <div class="timeline-row" id="inlineComposerRow">
+          <div class="time-col" id="liveClockLabel">09:00</div>
+          <div>
+            <textarea
+              id="canvasInput"
+              class="canvas-editor"
+              rows="2"
+              placeholder="Write a note directly on the page..."
+              oninput="autoGrow(this)"
+            ></textarea>
+
+            <div id="canvasPhotoPreviewWrap"></div>
+
+            <div class="canvas-toolbar">
+              <label
+                style="
+                  cursor: pointer;
+                  color: var(--muted);
+                  font-size: 13px;
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 5px;
+                "
+              >
+                <span>🖼 Add photo</span>
+                <input
+                  type="file"
+                  id="canvasPhotoInput"
+                  accept="image/*"
+                  style="display: none"
+                  onchange="handleCanvasPhoto(event)"
+                />
+              </label>
+              <button class="btn-primary" onclick="saveInlineNote()">
+                Post note
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline Entries -->
+        <div id="journalFeed"></div>
+      </section>
+
+      <!-- ================= TASKS VIEW ================= -->
+      <section id="view-tasks" class="view">
+        <div class="snoopy-card">
+          <div class="row-between">
+            <div>
+              <span style="font-size: 14px; font-weight: 600"
+                >Daily Progress</span
+              >
+              <span
+                class="mono muted"
+                id="taskDateLabel"
+                style="font-size: 11px; margin-left: 6px"
+              ></span>
+            </div>
+            <span
+              class="mono"
+              id="taskCountLabel"
+              style="font-size: 12px; font-weight: 600"
+              >0 / 0</span
+            >
+          </div>
+
+          <!-- Snoopy Walking Towards Doghouse -->
+          <div class="snoopy-stage" id="snoopyStage">
+            <div class="snoopy-ground"></div>
+            <div
+              class="snoopy-track-fill"
+              id="snoopyTrackFill"
+              style="width: 0%"
+            ></div>
+
+            <div class="snoopy-walker" id="snoopyWalker">
+              <span class="snoopy-heart">♥</span>
+              <svg viewBox="0 0 64 64" width="46" height="46" fill="none">
+                <path
+                  d="M14 42 Q8 38 10 33"
+                  stroke="#221E1A"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M22 48 L19 58 L25 58"
+                  stroke="#221E1A"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  fill="#FFFFFF"
+                />
+                <ellipse
+                  cx="25"
+                  cy="41"
+                  rx="9"
+                  ry="11"
+                  fill="#FFFFFF"
+                  stroke="#221E1A"
+                  stroke-width="2.3"
+                />
+                <ellipse cx="19" cy="40" rx="3" ry="5" fill="#221E1A" />
+                <path
+                  d="M28 48 L32 58 L38 58"
+                  stroke="#221E1A"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  fill="#FFFFFF"
+                />
+                <path
+                  d="M27 36 L35 42"
+                  stroke="#221E1A"
+                  stroke-width="2.3"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M21 31 Q26 33 32 30"
+                  stroke="#B84A39"
+                  stroke-width="3.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M22 24 C22 14, 34 11, 42 15 C49 18, 56 19, 56 24 C56 29, 47 31, 38 30 C32 30, 22 31, 22 24 Z"
+                  fill="#FFFFFF"
+                  stroke="#221E1A"
+                  stroke-width="2.3"
+                />
+                <circle cx="56" cy="23" r="3.2" fill="#221E1A" />
+                <circle cx="40" cy="19" r="1.7" fill="#221E1A" />
+                <path
+                  d="M44 26 Q48 28 51 25"
+                  stroke="#221E1A"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+                <ellipse
+                  cx="26"
+                  cy="24"
+                  rx="4.5"
+                  ry="8"
+                  transform="rotate(12 26 24)"
+                  fill="#221E1A"
+                />
+              </svg>
+            </div>
+
+            <div class="doghouse-goal" title="Goal">
+              <svg viewBox="0 0 64 72" width="46" height="54" fill="none">
+                <circle
+                  cx="32"
+                  cy="11"
+                  r="4"
+                  fill="#E3B448"
+                  stroke="#221E1A"
+                  stroke-width="1.6"
+                />
+                <path
+                  d="M35 10 L40 9 L35 12"
+                  fill="#E3B448"
+                  stroke="#221E1A"
+                  stroke-width="1.4"
+                />
+                <path
+                  d="M30 7 L28 3 M32 7 L32 2 M34 7 L36 3"
+                  stroke="#221E1A"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                />
+                <rect
+                  x="14"
+                  y="34"
+                  width="36"
+                  height="32"
+                  fill="#B84A39"
+                  stroke="#221E1A"
+                  stroke-width="2.2"
+                />
+                <path
+                  d="M25 66 L25 49 C25 44, 39 44, 39 49 L39 66 Z"
+                  fill="#221E1A"
+                />
+                <path
+                  d="M8 36 L32 15 L56 36"
+                  fill="#C85A48"
+                  stroke="#221E1A"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inline Quick-Add Task (No Pop-up) -->
+        <div class="quick-add-bar">
+          <input
+            type="text"
+            id="quickTaskInput"
+            placeholder="Add a task for today..."
+            onkeydown="if (event.key === 'Enter') addQuickTask();"
+          />
+          <button
+            class="quick-plus-btn"
+            onclick="addQuickTask()"
+            title="Add Task"
+          >
+            +
+          </button>
+        </div>
+
+        <div class="segmented">
+          <button class="active" data-filter="all">All</button>
+          <button data-filter="active">To Do</button>
+          <button data-filter="done">Done</button>
+        </div>
+
+        <div id="tasksList"></div>
+      </section>
+
+      <!-- ================= HABITS VIEW ================= -->
+      <section id="view-habits" class="view">
         <div class="card">
           <div class="row-between">
             <span class="serif" style="font-size: 18px; font-weight: 600"
@@ -432,52 +1080,51 @@
             style="font-size: 11px"
           ></div>
         </div>
+
+        <!-- Inline Quick-Add Habit -->
+        <div class="quick-add-bar">
+          <input
+            type="text"
+            id="quickHabitInput"
+            placeholder="New weekly habit (e.g., Read 20 pages)..."
+            onkeydown="if (event.key === 'Enter') addQuickHabit();"
+          />
+          <button
+            class="quick-plus-btn"
+            onclick="addQuickHabit()"
+            title="Add Habit"
+          >
+            +
+          </button>
+        </div>
+
         <div id="habitsList"></div>
-      </section>
-
-      <!-- TASKS VIEW -->
-      <section id="view-tasks" class="view">
-        <div class="card">
-          <div class="row-between">
-            <span class="serif muted" style="font-size: 14px">Completion</span>
-            <span class="mono" id="taskCountLabel" style="font-size: 12px"
-              >0 / 0 completed</span
-            >
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" id="taskBar" style="width: 0%"></div>
-          </div>
-        </div>
-
-        <div class="segmented">
-          <button class="active" data-filter="all">All</button>
-          <button data-filter="active">To Do</button>
-          <button data-filter="done">Done</button>
-        </div>
-
-        <div id="tasksList"></div>
-      </section>
-
-      <!-- JOURNAL VIEW -->
-      <section id="view-journal" class="view">
-        <div id="journalList"></div>
       </section>
     </main>
 
-    <button class="fab" id="journalFab" title="New Footnote">✎</button>
+    <!-- Floating Field Notes Pill Bar (Journal Tab Only) -->
+    <div class="journal-bottom-bar show" id="journalBottomBar">
+      <button class="new-note-pill" onclick="focusInlineComposer()">
+        <span>✎</span>
+        <span>new note</span>
+      </button>
+      <button
+        class="search-circle-btn"
+        onclick="toggleJournalSearch()"
+        title="Search Notes"
+      >
+        ⌕
+      </button>
+    </div>
 
+    <!-- Bottom Tab Navigation -->
     <nav class="tabs">
-      <button class="active" data-tab="habits">
-        <span class="icon">▤</span>Habits
+      <button class="active" data-tab="journal">
+        <span class="icon">¶</span>Journal
       </button>
       <button data-tab="tasks"><span class="icon">☑</span>Tasks</button>
-      <button data-tab="journal"><span class="icon">¶</span>Journal</button>
+      <button data-tab="habits"><span class="icon">▤</span>Habits</button>
     </nav>
-
-    <!-- MODAL -->
-    <div class="modal-backdrop" id="modalBackdrop">
-      <div class="modal" id="modalContent"></div>
-    </div>
 
     <script>
       const STORAGE_KEY = "footnotes_life_v1";
@@ -485,13 +1132,13 @@
         localStorage.getItem(STORAGE_KEY) ||
           '{"habits":[],"tasks":[],"journal":[]}',
       );
-      let currentTab = "habits";
-      let taskFilter = "all";
 
-      function save() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        render();
-      }
+      let currentTab = "journal";
+      let taskFilter = "all";
+      let selectedJournalDate = dayKey(new Date());
+      let pendingPhotoDataUrl = null;
+      let editingNoteId = null;
+      let lastTaskCountDone = -1;
 
       function dayKey(date) {
         const y = date.getFullYear();
@@ -500,14 +1147,41 @@
         return `${y}-${m}-${d}`;
       }
 
-      function getCurrentWeek() {
-        const today = new Date();
-        const day = today.getDay(); // 0=Sun, 1=Mon...
+      function parseDayKey(key) {
+        const [y, m, d] = key.split("-").map(Number);
+        return new Date(y, m - 1, d);
+      }
+
+      function syncDailyTasks() {
+        const today = dayKey(new Date());
+        let changed = false;
+        state.tasks.forEach((t) => {
+          if (!t.date) {
+            t.date = today;
+            changed = true;
+          } else if (!t.done && t.date < today) {
+            t.date = today;
+            changed = true;
+          }
+        });
+        if (changed) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+      }
+
+      function save() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        render();
+      }
+
+      function getWeekForDate(baseDate) {
+        const day = baseDate.getDay();
         const diffToMon = day === 0 ? -6 : 1 - day;
-        const mon = new Date(today);
-        mon.setDate(today.getDate() + diffToMon);
+        const mon = new Date(baseDate);
+        mon.setDate(baseDate.getDate() + diffToMon);
         const days = [];
         const labels = ["M", "T", "W", "T", "F", "S", "S"];
+        const todayStr = dayKey(new Date());
         for (let i = 0; i < 7; i++) {
           const d = new Date(mon);
           d.setDate(mon.getDate() + i);
@@ -515,14 +1189,373 @@
             date: d,
             key: dayKey(d),
             label: labels[i],
-            isToday: dayKey(d) === dayKey(today),
+            isToday: dayKey(d) === todayStr,
           });
         }
         return days;
       }
 
+      /* ================= JOURNAL RENDER & ACTIONS ================= */
+      function renderJournal() {
+        const selDateObj = parseDayKey(selectedJournalDate);
+        const week = getWeekForDate(selDateObj);
+        const todayStr = dayKey(new Date());
+
+        const monthShort = selDateObj.toLocaleDateString(undefined, {
+          month: "short",
+        });
+        document.getElementById("monthLabelBtn").textContent =
+          `${monthShort} ▾`;
+
+        const daysWithNotes = new Set(
+          state.journal.map((e) => dayKey(new Date(e.createdAt))),
+        );
+
+        document.getElementById("journalDaysRow").innerHTML = week
+          .map((d) => {
+            const isSel = d.key === selectedJournalDate;
+            const hasNotes = daysWithNotes.has(d.key);
+            return `
+          <button
+            class="day-pill ${isSel ? "selected" : ""} ${hasNotes ? "has-notes" : ""}"
+            onclick="selectJournalDate('${d.key}')"
+          >
+            <span>${d.date.getDate()}</span>
+            <span class="day-dot"></span>
+          </button>
+        `;
+          })
+          .join("");
+
+        const divider = document.getElementById("journalDayDivider");
+        if (selectedJournalDate === todayStr) {
+          divider.textContent = "TODAY";
+        } else {
+          divider.textContent = selDateObj
+            .toLocaleDateString(undefined, {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            })
+            .toUpperCase();
+        }
+
+        const now = new Date();
+        document.getElementById("liveClockLabel").textContent =
+          now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          });
+
+        const q = document
+          .getElementById("journalSearchInput")
+          .value.trim()
+          .toLowerCase();
+        const matchingEntries = state.journal.filter((e) => {
+          if (q) {
+            return (
+              (e.body || "").toLowerCase().includes(q) ||
+              (e.title || "").toLowerCase().includes(q)
+            );
+          }
+          return dayKey(new Date(e.createdAt)) === selectedJournalDate;
+        });
+
+        if (currentTab === "journal") {
+          const count = matchingEntries.length;
+          document.getElementById("pageSubtitle").textContent =
+            `${count} ${count === 1 ? "note" : "notes"}`;
+        }
+
+        const feed = document.getElementById("journalFeed");
+        if (!matchingEntries.length) {
+          feed.innerHTML = `<div class="empty">${q ? "No matching notes." : "No notes logged for this day yet."}</div>`;
+          return;
+        }
+
+        feed.innerHTML = matchingEntries
+          .map((e) => {
+            const dt = new Date(e.createdAt);
+            const timeStr = q
+              ? dt.toLocaleDateString(undefined, {
+                  month: "short",
+                  day: "numeric",
+                })
+              : dt.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                });
+
+            if (editingNoteId === e.id) {
+              return `
+            <div class="timeline-row">
+              <div class="time-col">${timeStr}</div>
+              <div>
+                <textarea id="editBox-${e.id}" class="canvas-editor" rows="3" oninput="autoGrow(this)">${escapeHtml(e.body)}</textarea>
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                  <button class="btn-primary" onclick="commitEditNote('${e.id}')">Save</button>
+                  <button class="btn-ghost" onclick="cancelEditNote()">Cancel</button>
+                </div>
+              </div>
+            </div>
+          `;
+            }
+
+            return `
+          <article class="timeline-row">
+            <div class="time-col">${timeStr}</div>
+            <div>
+              ${e.image ? `<img src="${e.image}" class="entry-photo" alt="Note attachment" />` : ""}
+              ${e.title ? `<div style="font-weight:600; margin-bottom:4px;">${escapeHtml(e.title)}</div>` : ""}
+              <p class="entry-body">${escapeHtml(e.body)}</p>
+              <div class="entry-actions">
+                <button onclick="startEditNote('${e.id}')">✎ Edit</button>
+                <button onclick="deleteJournal('${e.id}')">••• Delete</button>
+              </div>
+            </div>
+          </article>
+        `;
+          })
+          .join("");
+      }
+
+      window.selectJournalDate = (key) => {
+        selectedJournalDate = key;
+        editingNoteId = null;
+        renderJournal();
+      };
+
+      window.focusInlineComposer = () => {
+        selectedJournalDate = dayKey(new Date());
+        renderJournal();
+        const box = document.getElementById("canvasInput");
+        box.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => box.focus(), 180);
+      };
+
+      window.toggleJournalSearch = () => {
+        const bar = document.getElementById("journalSearchBar");
+        bar.classList.toggle("open");
+        if (bar.classList.contains("open")) {
+          document.getElementById("journalSearchInput").focus();
+        } else {
+          clearJournalSearch();
+        }
+      };
+
+      window.clearJournalSearch = () => {
+        document.getElementById("journalSearchInput").value = "";
+        document.getElementById("journalSearchBar").classList.remove("open");
+        renderJournal();
+      };
+
+      window.autoGrow = (el) => {
+        el.style.height = "auto";
+        el.style.height = el.scrollHeight + "px";
+      };
+
+      window.handleCanvasPhoto = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        compressImage(file, 800, 0.72, (dataUrl) => {
+          pendingPhotoDataUrl = dataUrl;
+          document.getElementById("canvasPhotoPreviewWrap").innerHTML = `
+          <div class="canvas-photo-preview">
+            <img src="${dataUrl}" alt="Preview" />
+            <button class="remove-photo-btn" onclick="clearPendingPhoto()">×</button>
+          </div>
+        `;
+        });
+      };
+
+      window.clearPendingPhoto = () => {
+        pendingPhotoDataUrl = null;
+        document.getElementById("canvasPhotoInput").value = "";
+        document.getElementById("canvasPhotoPreviewWrap").innerHTML = "";
+      };
+
+      function compressImage(file, maxWidth, quality, callback) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const scale = Math.min(1, maxWidth / img.width);
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            callback(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      window.saveInlineNote = () => {
+        const box = document.getElementById("canvasInput");
+        const body = box.value.trim();
+        if (!body && !pendingPhotoDataUrl) return;
+
+        const todayStr = dayKey(new Date());
+        let timestamp = new Date().toISOString();
+        if (selectedJournalDate !== todayStr) {
+          const d = parseDayKey(selectedJournalDate);
+          const now = new Date();
+          d.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
+          timestamp = d.toISOString();
+        }
+
+        state.journal.unshift({
+          id: crypto.randomUUID(),
+          title: "",
+          body,
+          image: pendingPhotoDataUrl || null,
+          createdAt: timestamp,
+        });
+
+        box.value = "";
+        box.style.height = "54px";
+        clearPendingPhoto();
+        save();
+      };
+
+      window.startEditNote = (id) => {
+        editingNoteId = id;
+        renderJournal();
+        const box = document.getElementById(`editBox-${id}`);
+        if (box) {
+          autoGrow(box);
+          box.focus();
+        }
+      };
+
+      window.cancelEditNote = () => {
+        editingNoteId = null;
+        renderJournal();
+      };
+
+      window.commitEditNote = (id) => {
+        const box = document.getElementById(`editBox-${id}`);
+        if (!box) return;
+        const updated = box.value.trim();
+        const entry = state.journal.find((x) => x.id === id);
+        if (entry && updated) {
+          entry.body = updated;
+        }
+        editingNoteId = null;
+        save();
+      };
+
+      window.deleteJournal = (id) => {
+        state.journal = state.journal.filter((x) => x.id !== id);
+        save();
+      };
+
+      /* ================= TASKS + SNOOPY RENDER & ACTIONS ================= */
+      function renderTasks() {
+        syncDailyTasks();
+        const today = dayKey(new Date());
+        const todayTasks = state.tasks.filter((t) => t.date === today);
+
+        const doneCount = todayTasks.filter((t) => t.done).length;
+        const total = todayTasks.length;
+        const ratio = total ? doneCount / total : 0;
+        const pct = Math.round(ratio * 100);
+
+        document.getElementById("taskDateLabel").textContent =
+          new Date().toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+          });
+        document.getElementById("taskCountLabel").textContent =
+          `${doneCount} / ${total} (${pct}%)`;
+
+        if (currentTab === "tasks") {
+          document.getElementById("pageSubtitle").textContent =
+            `${total - doneCount} remaining today`;
+        }
+
+        const stage = document.getElementById("snoopyStage");
+        const stageWidth = stage.clientWidth || 320;
+        const maxWalkPx = Math.max(0, stageWidth - 96);
+        const snoopyX = 8 + ratio * maxWalkPx;
+
+        const walker = document.getElementById("snoopyWalker");
+        const trackFill = document.getElementById("snoopyTrackFill");
+        walker.style.left = `${snoopyX}px`;
+        trackFill.style.width = `${ratio * maxWalkPx}px`;
+
+        if (lastTaskCountDone !== -1 && doneCount !== lastTaskCountDone) {
+          walker.classList.remove("walking");
+          void walker.offsetWidth;
+          walker.classList.add("walking");
+        }
+        lastTaskCountDone = doneCount;
+
+        walker.classList.toggle("celebrate", total > 0 && doneCount === total);
+
+        const filtered = todayTasks.filter((t) =>
+          taskFilter === "all"
+            ? true
+            : taskFilter === "active"
+              ? !t.done
+              : t.done,
+        );
+
+        const list = document.getElementById("tasksList");
+        if (!filtered.length) {
+          list.innerHTML = `<div class="empty">${total ? "No tasks in this filter." : "No tasks yet today. Type above and tap +."}</div>`;
+          return;
+        }
+
+        list.innerHTML = filtered
+          .map(
+            (t) => `
+        <div class="task-item">
+          <button class="check-circle ${t.done ? "done" : ""}" onclick="toggleTask('${t.id}')">${t.done ? "✓" : ""}</button>
+          <div class="task-title ${t.done ? "done" : ""}">${escapeHtml(t.title)}</div>
+          <button class="btn-danger" onclick="deleteTask('${t.id}')">×</button>
+        </div>
+      `,
+          )
+          .join("");
+      }
+
+      window.addQuickTask = () => {
+        const input = document.getElementById("quickTaskInput");
+        const title = input.value.trim();
+        if (!title) return;
+        state.tasks.unshift({
+          id: crypto.randomUUID(),
+          title,
+          notes: "",
+          done: false,
+          date: dayKey(new Date()),
+        });
+        input.value = "";
+        save();
+      };
+
+      window.toggleTask = (id) => {
+        const t = state.tasks.find((x) => x.id === id);
+        if (t) {
+          t.done = !t.done;
+          t.date = dayKey(new Date());
+          save();
+        }
+      };
+
+      window.deleteTask = (id) => {
+        state.tasks = state.tasks.filter((x) => x.id !== id);
+        save();
+      };
+
+      /* ================= HABITS RENDER & ACTIONS ================= */
       function renderHabits() {
-        const week = getCurrentWeek();
+        const week = getWeekForDate(new Date());
         const weekKeys = new Set(week.map((d) => d.key));
         const fmt = (d) =>
           d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
@@ -532,7 +1565,7 @@
         let totalDone = 0;
         const list = document.getElementById("habitsList");
         if (!state.habits.length) {
-          list.innerHTML = `<div class="empty">No habits yet. Tap + to track your week.</div>`;
+          list.innerHTML = `<div class="empty">No habits yet. Add one above to track your week.</div>`;
         } else {
           list.innerHTML = state.habits
             .map((h) => {
@@ -570,85 +1603,22 @@
           : 0;
         document.getElementById("weeklyPct").textContent = `${pct}%`;
         document.getElementById("weeklyBar").style.width = `${pct}%`;
-      }
 
-      function renderTasks() {
-        const doneCount = state.tasks.filter((t) => t.done).length;
-        const total = state.tasks.length;
-        const pct = total ? Math.round((doneCount / total) * 100) : 0;
-        document.getElementById("taskCountLabel").textContent =
-          `${doneCount} / ${total} completed`;
-        document.getElementById("taskBar").style.width = `${pct}%`;
-
-        const filtered = state.tasks.filter((t) =>
-          taskFilter === "all"
-            ? true
-            : taskFilter === "active"
-              ? !t.done
-              : t.done,
-        );
-
-        const list = document.getElementById("tasksList");
-        if (!filtered.length) {
-          list.innerHTML = `<div class="empty">${total ? "No tasks in this view." : "Your list is clear."}</div>`;
-          return;
+        if (currentTab === "habits") {
+          document.getElementById("pageSubtitle").textContent =
+            `${pct}% this week`;
         }
-
-        list.innerHTML = filtered
-          .map(
-            (t) => `
-        <div class="task-item">
-          <button class="check-circle ${t.done ? "done" : ""}" onclick="toggleTask('${t.id}')">${t.done ? "✓" : ""}</button>
-          <div style="flex:1;">
-            <div class="serif task-title ${t.done ? "done" : ""}" style="font-size:16px;">${escapeHtml(t.title)}</div>
-            ${t.notes ? `<div class="muted" style="font-size:13px; margin-top:3px;">${escapeHtml(t.notes)}</div>` : ""}
-          </div>
-          <button class="btn-danger" onclick="deleteTask('${t.id}')">×</button>
-        </div>
-      `,
-          )
-          .join("");
       }
 
-      function renderJournal() {
-        const list = document.getElementById("journalList");
-        if (!state.journal.length) {
-          list.innerHTML = `<div class="empty">A quiet place for your daily footnotes.<br/>Tap ✎ to write.</div>`;
-          return;
-        }
+      window.addQuickHabit = () => {
+        const input = document.getElementById("quickHabitInput");
+        const val = input.value.trim();
+        if (!val) return;
+        state.habits.push({ id: crypto.randomUUID(), title: val, days: [] });
+        input.value = "";
+        save();
+      };
 
-        list.innerHTML = state.journal
-          .map((e) => {
-            const dt = new Date(e.createdAt).toLocaleString(undefined, {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            });
-            return `
-          <article class="journal-entry" onclick="openJournalModal('${e.id}')">
-            <div class="journal-date">${dt}</div>
-            ${e.title ? `<h3 class="journal-title">${escapeHtml(e.title)}</h3>` : ""}
-            <p class="journal-body">${escapeHtml(e.body)}</p>
-          </article>
-        `;
-          })
-          .join("");
-      }
-
-      function render() {
-        renderHabits();
-        renderTasks();
-        renderJournal();
-        document.getElementById("addBtn").style.display =
-          currentTab === "journal" ? "none" : "inline-flex";
-        document
-          .getElementById("journalFab")
-          .classList.toggle("show", currentTab === "journal");
-      }
-
-      // Actions
       window.toggleHabitDay = (id, key) => {
         const h = state.habits.find((x) => x.id === id);
         if (!h) return;
@@ -663,133 +1633,10 @@
         save();
       };
 
-      window.toggleTask = (id) => {
-        const t = state.tasks.find((x) => x.id === id);
-        if (t) {
-          t.done = !t.done;
-          save();
-        }
+      /* ================= BACKUP & NAVIGATION ================= */
+      window.toggleBackupPanel = () => {
+        document.getElementById("backupPanel").classList.toggle("open");
       };
-
-      window.deleteTask = (id) => {
-        state.tasks = state.tasks.filter((x) => x.id !== id);
-        save();
-      };
-
-      // Modals
-      const backdrop = document.getElementById("modalBackdrop");
-      const modal = document.getElementById("modalContent");
-
-      function openModal(html) {
-        modal.innerHTML = html;
-        backdrop.classList.add("open");
-      }
-
-      function closeModal() {
-        backdrop.classList.remove("open");
-      }
-
-      backdrop.addEventListener("click", (e) => {
-        if (e.target === backdrop) closeModal();
-      });
-
-      function openAddHabitModal() {
-        openModal(`
-        <div class="row-between" style="margin-bottom:14px;">
-          <strong class="serif" style="font-size:18px;">New Habit</strong>
-          <button class="btn-ghost" onclick="closeModal()">Cancel</button>
-        </div>
-        <input type="text" id="habitInput" placeholder="e.g., Read 20 pages" autofocus />
-        <button class="btn-primary" onclick="submitHabit()">Save Habit</button>
-      `);
-      }
-
-      window.submitHabit = () => {
-        const val = document.getElementById("habitInput").value.trim();
-        if (!val) return;
-        state.habits.push({ id: crypto.randomUUID(), title: val, days: [] });
-        closeModal();
-        save();
-      };
-
-      function openAddTaskModal() {
-        openModal(`
-        <div class="row-between" style="margin-bottom:14px;">
-          <strong class="serif" style="font-size:18px;">New Task</strong>
-          <button class="btn-ghost" onclick="closeModal()">Cancel</button>
-        </div>
-        <input type="text" id="taskInput" placeholder="What needs to get done?" autofocus />
-        <input type="text" id="taskNotesInput" placeholder="Notes (optional)" />
-        <button class="btn-primary" onclick="submitTask()">Add Task</button>
-      `);
-      }
-
-      window.submitTask = () => {
-        const title = document.getElementById("taskInput").value.trim();
-        const notes = document.getElementById("taskNotesInput").value.trim();
-        if (!title) return;
-        state.tasks.unshift({
-          id: crypto.randomUUID(),
-          title,
-          notes,
-          done: false,
-        });
-        closeModal();
-        save();
-      };
-
-      window.openJournalModal = (id = null) => {
-        const entry = id ? state.journal.find((x) => x.id === id) : null;
-        openModal(`
-        <div class="row-between" style="margin-bottom:14px;">
-          <button class="btn-ghost" onclick="closeModal()">Close</button>
-          ${entry ? `<button class="btn-danger" onclick="deleteJournal('${entry.id}')">Delete</button>` : ""}
-        </div>
-        <input type="text" id="jTitle" placeholder="Title (optional)" value="${entry ? escapeHtml(entry.title) : ""}" />
-        <textarea id="jBody" placeholder="Write a footnote...">${entry ? escapeHtml(entry.body) : ""}</textarea>
-        <button class="btn-primary" onclick="submitJournal('${id || ""}')">Save Entry</button>
-      `);
-      };
-
-      window.submitJournal = (id) => {
-        const title = document.getElementById("jTitle").value.trim();
-        const body = document.getElementById("jBody").value.trim();
-        if (!body) return;
-        if (id) {
-          const e = state.journal.find((x) => x.id === id);
-          if (e) {
-            e.title = title;
-            e.body = body;
-          }
-        } else {
-          state.journal.unshift({
-            id: crypto.randomUUID(),
-            title,
-            body,
-            createdAt: new Date().toISOString(),
-          });
-        }
-        closeModal();
-        save();
-      };
-
-      window.deleteJournal = (id) => {
-        state.journal = state.journal.filter((x) => x.id !== id);
-        closeModal();
-        save();
-      };
-
-      function openBackupModal() {
-        openModal(`
-        <div class="row-between" style="margin-bottom:14px;">
-          <strong class="serif" style="font-size:18px;">Data Backup</strong>
-          <button class="btn-ghost" onclick="closeModal()">Close</button>
-        </div>
-        <p class="muted" style="font-size:14px; margin-top:0;">Your data is stored locally on your iPhone. Export a JSON copy anytime for safekeeping.</p>
-        <button class="btn-primary" style="margin-bottom:12px;" onclick="exportData()">Export Backup (.json)</button>
-        <input type="file" id="importFile" accept=".json" style="width:100%; font-size:14px;" onchange="importData(event)" />
-      `);
-      }
 
       window.exportData = () => {
         const blob = new Blob([JSON.stringify(state, null, 2)], {
@@ -812,7 +1659,7 @@
             const parsed = JSON.parse(e.target.result);
             if (parsed.habits && parsed.tasks && parsed.journal) {
               state = parsed;
-              closeModal();
+              toggleBackupPanel();
               save();
             }
           } catch {
@@ -836,7 +1683,15 @@
         );
       }
 
-      // Navigation & Events
+      function render() {
+        renderJournal();
+        renderTasks();
+        renderHabits();
+        document
+          .getElementById("journalBottomBar")
+          .classList.toggle("show", currentTab === "journal");
+      }
+
       document.querySelectorAll("nav.tabs button").forEach((btn) => {
         btn.addEventListener("click", () => {
           currentTab = btn.dataset.tab;
@@ -848,12 +1703,15 @@
             .querySelectorAll(".view")
             .forEach((v) => v.classList.remove("active"));
           document.getElementById(`view-${currentTab}`).classList.add("active");
-          document.getElementById("pageTitle").textContent =
-            currentTab === "habits"
-              ? "Habits"
-              : currentTab === "tasks"
-                ? "Tasks"
-                : "Journal";
+
+          const titles = {
+            journal: "Field Notes",
+            tasks: "Tasks",
+            habits: "Habits",
+          };
+          const icons = { journal: "📖", tasks: "🐾", habits: "▤" };
+          document.getElementById("pageTitle").textContent = titles[currentTab];
+          document.getElementById("headerIcon").textContent = icons[currentTab];
           render();
         });
       });
@@ -869,18 +1727,22 @@
         });
       });
 
-      document.getElementById("addBtn").addEventListener("click", () => {
-        if (currentTab === "habits") openAddHabitModal();
-        else if (currentTab === "tasks") openAddTaskModal();
+      document.getElementById("todayJumpBtn").addEventListener("click", () => {
+        selectedJournalDate = dayKey(new Date());
+        render();
+      });
+
+      document.getElementById("monthLabelBtn").addEventListener("click", () => {
+        selectedJournalDate = dayKey(new Date());
+        render();
       });
 
       document
-        .getElementById("journalFab")
-        .addEventListener("click", () => openJournalModal());
-      document
-        .getElementById("backupBtn")
-        .addEventListener("click", openBackupModal);
+        .getElementById("backupToggleBtn")
+        .addEventListener("click", toggleBackupPanel);
+      window.addEventListener("resize", renderTasks);
 
+      syncDailyTasks();
       render();
     </script>
   </body>
