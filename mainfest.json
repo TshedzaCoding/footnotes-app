@@ -1,0 +1,20 @@
+{
+  "name": "Footnotes Life",
+  "short_name": "Footnotes",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#FAF7F2",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192/1C1C1A/FAF7F2?text=F",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512/1C1C1A/FAF7F2?text=F",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

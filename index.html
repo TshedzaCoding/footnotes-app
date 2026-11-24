@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Footnotes" />
+    <link rel="manifest" href="manifest.json" />
+    <title>Footnotes</title>
+    <style>
+      :root {
+        --bg: #faf7f2;
+        --surface: #fffdf9;
+        --text: #1c1c1a;
+        --muted: #737068;
+        --hairline: rgba(0, 0, 0, 0.09);
+        --accent: #b85738;
+        --serif: Georgia, "New York", "Times New Roman", serif;
+        --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+        --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141414;
+          --surface: #1f1f1f;
+          --text: #f0ede6;
+          --muted: #99968e;
+          --hairline: rgba(255, 255, 255, 0.11);
+          --accent: #e08c66;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        min-height: 100vh;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--bg);
+        border-bottom: 1px solid var(--hairline);
+        padding: 16px 20px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header h1 {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+      }
+
+      .icon-btn {
+        background: none;
+        border: 1px solid var(--hairline);
+        color: var(--text);
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      main {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 18px 20px;
+      }
+
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      .row-between {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      .serif {
+        font-family: var(--serif);
+      }
+      .mono {
+        font-family: var(--mono);
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      .progress-track {
+        height: 6px;
+        background: var(--hairline);
+        border-radius: 99px;
+        overflow: hidden;
+        margin: 12px 0;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 99px;
+        transition: width 0.25s ease;
+      }
+
+      /* Habits */
+      .week-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+        margin-top: 12px;
+      }
+
+      .day-btn {
+        background: var(--bg);
+        border: 1px solid var(--hairline);
+        border-radius: 8px;
+        padding: 8px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 11px;
+      }
+
+      .day-btn.today {
+        border-color: var(--accent);
+      }
+      .day-btn.done {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      /* Tasks */
+      .segmented {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        background: var(--hairline);
+        padding: 3px;
+        border-radius: 10px;
+        margin-bottom: 16px;
+      }
+
+      .segmented button {
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        padding: 7px 0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      .segmented button.active {
+        background: var(--surface);
+        color: var(--text);
+      }
+
+      .task-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--hairline);
+      }
+
+      .check-circle {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 1.5px solid var(--muted);
+        background: none;
+        flex-shrink: 0;
+        margin-top: 2px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 12px;
+      }
+
+      .check-circle.done {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .task-title.done {
+        text-decoration: line-through;
+        color: var(--muted);
+      }
+
+      /* Journal (Footnotes style) */
+      .journal-entry {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--hairline);
+        cursor: pointer;
+      }
+
+      .journal-date {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.7px;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+
+      .journal-title {
+        font-family: var(--serif);
+        font-size: 19px;
+        font-weight: 600;
+        margin: 0 0 6px;
+      }
+
+      .journal-body {
+        font-family: var(--serif);
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0;
+        white-space: pre-wrap;
+        opacity: 0.92;
+      }
+
+      .fab {
+        position: fixed;
+        right: 20px;
+        bottom: calc(82px + env(safe-area-inset-bottom));
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        border: none;
+        background: var(--text);
+        color: var(--bg);
+        font-size: 24px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .fab.show {
+        display: flex;
+      }
+
+      /* Bottom Tab Bar */
+      nav.tabs {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border-top: 1px solid var(--hairline);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-bottom: env(safe-area-inset-bottom);
+        z-index: 20;
+      }
+
+      nav.tabs button {
+        background: none;
+        border: none;
+        padding: 12px 0 10px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+      }
+
+      nav.tabs button.active {
+        color: var(--accent);
+      }
+      nav.tabs button span.icon {
+        font-size: 18px;
+      }
+
+      /* Modal */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        z-index: 50;
+      }
+
+      .modal-backdrop.open {
+        display: flex;
+      }
+
+      .modal {
+        background: var(--bg);
+        width: 100%;
+        max-width: 640px;
+        border-radius: 20px 20px 0 0;
+        padding: 20px 20px calc(24px + env(safe-area-inset-bottom));
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--hairline);
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 16px;
+        font-family: var(--serif);
+        margin-bottom: 12px;
+      }
+
+      textarea {
+        min-height: 180px;
+        resize: vertical;
+        line-height: 1.6;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 18px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      .btn-ghost {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 14px;
+        cursor: pointer;
+        padding: 6px;
+      }
+
+      .btn-danger {
+        background: none;
+        border: none;
+        color: #c94a4a;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 56px 12px;
+        font-family: var(--serif);
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1 id="pageTitle">Habits</h1>
+      <div style="display: flex; gap: 8px">
+        <button class="icon-btn" id="backupBtn" title="Backup">⚙</button>
+        <button class="icon-btn" id="addBtn" title="Add">+</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- HABITS VIEW -->
+      <section id="view-habits" class="view active">
+        <div class="card">
+          <div class="row-between">
+            <span class="serif" style="font-size: 18px; font-weight: 600"
+              >This Week</span
+            >
+            <span
+              class="mono"
+              id="weeklyPct"
+              style="font-size: 20px; font-weight: 600; color: var(--accent)"
+              >0%</span
+            >
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="weeklyBar" style="width: 0%"></div>
+          </div>
+          <div
+            class="mono muted"
+            id="weekRangeLabel"
+            style="font-size: 11px"
+          ></div>
+        </div>
+        <div id="habitsList"></div>
+      </section>
+
+      <!-- TASKS VIEW -->
+      <section id="view-tasks" class="view">
+        <div class="card">
+          <div class="row-between">
+            <span class="serif muted" style="font-size: 14px">Completion</span>
+            <span class="mono" id="taskCountLabel" style="font-size: 12px"
+              >0 / 0 completed</span
+            >
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="taskBar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="segmented">
+          <button class="active" data-filter="all">All</button>
+          <button data-filter="active">To Do</button>
+          <button data-filter="done">Done</button>
+        </div>
+
+        <div id="tasksList"></div>
+      </section>
+
+      <!-- JOURNAL VIEW -->
+      <section id="view-journal" class="view">
+        <div id="journalList"></div>
+      </section>
+    </main>
+
+    <button class="fab" id="journalFab" title="New Footnote">✎</button>
+
+    <nav class="tabs">
+      <button class="active" data-tab="habits">
+        <span class="icon">▤</span>Habits
+      </button>
+      <button data-tab="tasks"><span class="icon">☑</span>Tasks</button>
+      <button data-tab="journal"><span class="icon">¶</span>Journal</button>
+    </nav>
+
+    <!-- MODAL -->
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal" id="modalContent"></div>
+    </div>
+
+    <script>
+      const STORAGE_KEY = "footnotes_life_v1";
+      let state = JSON.parse(
+        localStorage.getItem(STORAGE_KEY) ||
+          '{"habits":[],"tasks":[],"journal":[]}',
+      );
+      let currentTab = "habits";
+      let taskFilter = "all";
+
+      function save() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        render();
+      }
+
+      function dayKey(date) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, "0");
+        const d = String(date.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+      }
+
+      function getCurrentWeek() {
+        const today = new Date();
+        const day = today.getDay(); // 0=Sun, 1=Mon...
+        const diffToMon = day === 0 ? -6 : 1 - day;
+        const mon = new Date(today);
+        mon.setDate(today.getDate() + diffToMon);
+        const days = [];
+        const labels = ["M", "T", "W", "T", "F", "S", "S"];
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(mon);
+          d.setDate(mon.getDate() + i);
+          days.push({
+            date: d,
+            key: dayKey(d),
+            label: labels[i],
+            isToday: dayKey(d) === dayKey(today),
+          });
+        }
+        return days;
+      }
+
+      function renderHabits() {
+        const week = getCurrentWeek();
+        const weekKeys = new Set(week.map((d) => d.key));
+        const fmt = (d) =>
+          d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+        document.getElementById("weekRangeLabel").textContent =
+          `${fmt(week[0].date)} – ${fmt(week[6].date)}`;
+
+        let totalDone = 0;
+        const list = document.getElementById("habitsList");
+        if (!state.habits.length) {
+          list.innerHTML = `<div class="empty">No habits yet. Tap + to track your week.</div>`;
+        } else {
+          list.innerHTML = state.habits
+            .map((h) => {
+              const doneThisWeek = h.days.filter((k) => weekKeys.has(k)).length;
+              totalDone += doneThisWeek;
+              return `
+            <div class="card">
+              <div class="row-between">
+                <div>
+                  <div class="serif" style="font-size:17px; font-weight:600;">${escapeHtml(h.title)}</div>
+                  <div class="mono muted" style="font-size:11px; margin-top:2px;">${doneThisWeek} of 7 days</div>
+                </div>
+                <button class="btn-danger" onclick="deleteHabit('${h.id}')">Delete</button>
+              </div>
+              <div class="week-grid">
+                ${week
+                  .map((d) => {
+                    const done = h.days.includes(d.key);
+                    return `
+                    <button class="day-btn ${done ? "done" : ""} ${d.isToday ? "today" : ""}"
+                      onclick="toggleHabitDay('${h.id}', '${d.key}')">
+                      <span>${d.label}</span>
+                      <span>${done ? "✓" : d.date.getDate()}</span>
+                    </button>`;
+                  })
+                  .join("")}
+              </div>
+            </div>`;
+            })
+            .join("");
+        }
+
+        const pct = state.habits.length
+          ? Math.round((totalDone / (state.habits.length * 7)) * 100)
+          : 0;
+        document.getElementById("weeklyPct").textContent = `${pct}%`;
+        document.getElementById("weeklyBar").style.width = `${pct}%`;
+      }
+
+      function renderTasks() {
+        const doneCount = state.tasks.filter((t) => t.done).length;
+        const total = state.tasks.length;
+        const pct = total ? Math.round((doneCount / total) * 100) : 0;
+        document.getElementById("taskCountLabel").textContent =
+          `${doneCount} / ${total} completed`;
+        document.getElementById("taskBar").style.width = `${pct}%`;
+
+        const filtered = state.tasks.filter((t) =>
+          taskFilter === "all"
+            ? true
+            : taskFilter === "active"
+              ? !t.done
+              : t.done,
+        );
+
+        const list = document.getElementById("tasksList");
+        if (!filtered.length) {
+          list.innerHTML = `<div class="empty">${total ? "No tasks in this view." : "Your list is clear."}</div>`;
+          return;
+        }
+
+        list.innerHTML = filtered
+          .map(
+            (t) => `
+        <div class="task-item">
+          <button class="check-circle ${t.done ? "done" : ""}" onclick="toggleTask('${t.id}')">${t.done ? "✓" : ""}</button>
+          <div style="flex:1;">
+            <div class="serif task-title ${t.done ? "done" : ""}" style="font-size:16px;">${escapeHtml(t.title)}</div>
+            ${t.notes ? `<div class="muted" style="font-size:13px; margin-top:3px;">${escapeHtml(t.notes)}</div>` : ""}
+          </div>
+          <button class="btn-danger" onclick="deleteTask('${t.id}')">×</button>
+        </div>
+      `,
+          )
+          .join("");
+      }
+
+      function renderJournal() {
+        const list = document.getElementById("journalList");
+        if (!state.journal.length) {
+          list.innerHTML = `<div class="empty">A quiet place for your daily footnotes.<br/>Tap ✎ to write.</div>`;
+          return;
+        }
+
+        list.innerHTML = state.journal
+          .map((e) => {
+            const dt = new Date(e.createdAt).toLocaleString(undefined, {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            return `
+          <article class="journal-entry" onclick="openJournalModal('${e.id}')">
+            <div class="journal-date">${dt}</div>
+            ${e.title ? `<h3 class="journal-title">${escapeHtml(e.title)}</h3>` : ""}
+            <p class="journal-body">${escapeHtml(e.body)}</p>
+          </article>
+        `;
+          })
+          .join("");
+      }
+
+      function render() {
+        renderHabits();
+        renderTasks();
+        renderJournal();
+        document.getElementById("addBtn").style.display =
+          currentTab === "journal" ? "none" : "inline-flex";
+        document
+          .getElementById("journalFab")
+          .classList.toggle("show", currentTab === "journal");
+      }
+
+      // Actions
+      window.toggleHabitDay = (id, key) => {
+        const h = state.habits.find((x) => x.id === id);
+        if (!h) return;
+        const idx = h.days.indexOf(key);
+        if (idx >= 0) h.days.splice(idx, 1);
+        else h.days.push(key);
+        save();
+      };
+
+      window.deleteHabit = (id) => {
+        state.habits = state.habits.filter((x) => x.id !== id);
+        save();
+      };
+
+      window.toggleTask = (id) => {
+        const t = state.tasks.find((x) => x.id === id);
+        if (t) {
+          t.done = !t.done;
+          save();
+        }
+      };
+
+      window.deleteTask = (id) => {
+        state.tasks = state.tasks.filter((x) => x.id !== id);
+        save();
+      };
+
+      // Modals
+      const backdrop = document.getElementById("modalBackdrop");
+      const modal = document.getElementById("modalContent");
+
+      function openModal(html) {
+        modal.innerHTML = html;
+        backdrop.classList.add("open");
+      }
+
+      function closeModal() {
+        backdrop.classList.remove("open");
+      }
+
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) closeModal();
+      });
+
+      function openAddHabitModal() {
+        openModal(`
+        <div class="row-between" style="margin-bottom:14px;">
+          <strong class="serif" style="font-size:18px;">New Habit</strong>
+          <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+        </div>
+        <input type="text" id="habitInput" placeholder="e.g., Read 20 pages" autofocus />
+        <button class="btn-primary" onclick="submitHabit()">Save Habit</button>
+      `);
+      }
+
+      window.submitHabit = () => {
+        const val = document.getElementById("habitInput").value.trim();
+        if (!val) return;
+        state.habits.push({ id: crypto.randomUUID(), title: val, days: [] });
+        closeModal();
+        save();
+      };
+
+      function openAddTaskModal() {
+        openModal(`
+        <div class="row-between" style="margin-bottom:14px;">
+          <strong class="serif" style="font-size:18px;">New Task</strong>
+          <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+        </div>
+        <input type="text" id="taskInput" placeholder="What needs to get done?" autofocus />
+        <input type="text" id="taskNotesInput" placeholder="Notes (optional)" />
+        <button class="btn-primary" onclick="submitTask()">Add Task</button>
+      `);
+      }
+
+      window.submitTask = () => {
+        const title = document.getElementById("taskInput").value.trim();
+        const notes = document.getElementById("taskNotesInput").value.trim();
+        if (!title) return;
+        state.tasks.unshift({
+          id: crypto.randomUUID(),
+          title,
+          notes,
+          done: false,
+        });
+        closeModal();
+        save();
+      };
+
+      window.openJournalModal = (id = null) => {
+        const entry = id ? state.journal.find((x) => x.id === id) : null;
+        openModal(`
+        <div class="row-between" style="margin-bottom:14px;">
+          <button class="btn-ghost" onclick="closeModal()">Close</button>
+          ${entry ? `<button class="btn-danger" onclick="deleteJournal('${entry.id}')">Delete</button>` : ""}
+        </div>
+        <input type="text" id="jTitle" placeholder="Title (optional)" value="${entry ? escapeHtml(entry.title) : ""}" />
+        <textarea id="jBody" placeholder="Write a footnote...">${entry ? escapeHtml(entry.body) : ""}</textarea>
+        <button class="btn-primary" onclick="submitJournal('${id || ""}')">Save Entry</button>
+      `);
+      };
+
+      window.submitJournal = (id) => {
+        const title = document.getElementById("jTitle").value.trim();
+        const body = document.getElementById("jBody").value.trim();
+        if (!body) return;
+        if (id) {
+          const e = state.journal.find((x) => x.id === id);
+          if (e) {
+            e.title = title;
+            e.body = body;
+          }
+        } else {
+          state.journal.unshift({
+            id: crypto.randomUUID(),
+            title,
+            body,
+            createdAt: new Date().toISOString(),
+          });
+        }
+        closeModal();
+        save();
+      };
+
+      window.deleteJournal = (id) => {
+        state.journal = state.journal.filter((x) => x.id !== id);
+        closeModal();
+        save();
+      };
+
+      function openBackupModal() {
+        openModal(`
+        <div class="row-between" style="margin-bottom:14px;">
+          <strong class="serif" style="font-size:18px;">Data Backup</strong>
+          <button class="btn-ghost" onclick="closeModal()">Close</button>
+        </div>
+        <p class="muted" style="font-size:14px; margin-top:0;">Your data is stored locally on your iPhone. Export a JSON copy anytime for safekeeping.</p>
+        <button class="btn-primary" style="margin-bottom:12px;" onclick="exportData()">Export Backup (.json)</button>
+        <input type="file" id="importFile" accept=".json" style="width:100%; font-size:14px;" onchange="importData(event)" />
+      `);
+      }
+
+      window.exportData = () => {
+        const blob = new Blob([JSON.stringify(state, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `footnotes-backup-${dayKey(new Date())}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      window.importData = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const parsed = JSON.parse(e.target.result);
+            if (parsed.habits && parsed.tasks && parsed.journal) {
+              state = parsed;
+              closeModal();
+              save();
+            }
+          } catch {
+            alert("Invalid backup file.");
+          }
+        };
+        reader.readAsText(file);
+      };
+
+      function escapeHtml(str) {
+        return String(str).replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[m],
+        );
+      }
+
+      // Navigation & Events
+      document.querySelectorAll("nav.tabs button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentTab = btn.dataset.tab;
+          document
+            .querySelectorAll("nav.tabs button")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          document
+            .querySelectorAll(".view")
+            .forEach((v) => v.classList.remove("active"));
+          document.getElementById(`view-${currentTab}`).classList.add("active");
+          document.getElementById("pageTitle").textContent =
+            currentTab === "habits"
+              ? "Habits"
+              : currentTab === "tasks"
+                ? "Tasks"
+                : "Journal";
+          render();
+        });
+      });
+
+      document.querySelectorAll(".segmented button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          taskFilter = btn.dataset.filter;
+          document
+            .querySelectorAll(".segmented button")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderTasks();
+        });
+      });
+
+      document.getElementById("addBtn").addEventListener("click", () => {
+        if (currentTab === "habits") openAddHabitModal();
+        else if (currentTab === "tasks") openAddTaskModal();
+      });
+
+      document
+        .getElementById("journalFab")
+        .addEventListener("click", () => openJournalModal());
+      document
+        .getElementById("backupBtn")
+        .addEventListener("click", openBackupModal);
+
+      render();
+    </script>
+  </body>
+</html>
