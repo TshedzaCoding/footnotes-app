@@ -155,6 +155,37 @@
         color: var(--muted);
       }
 
+      /* Shared Period Navigation */
+      .period-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .period-nav-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid var(--hairline);
+        background: var(--surface);
+        color: var(--text);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .period-label {
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        text-align: center;
+      }
+
       /* ================= JOURNAL (FIELD NOTES STYLE) ================= */
       .date-strip {
         display: flex;
@@ -241,7 +272,6 @@
         background: var(--hairline);
       }
 
-      /* Inline Canvas Composer */
       .timeline-row {
         display: grid;
         grid-template-columns: 52px 1fr;
@@ -344,7 +374,6 @@
         gap: 4px;
       }
 
-      /* Bottom Floating Field Notes Bar */
       .journal-bottom-bar {
         position: fixed;
         left: 50%;
@@ -405,7 +434,7 @@
         display: block;
       }
 
-      /* ================= TASKS + SNOOPY ANIMATION ================= */
+      /* ================= TASKS + SNOOPY + WEEK PLANNER ================= */
       .snoopy-card {
         background: var(--surface);
         border: 1px solid var(--hairline);
@@ -512,7 +541,6 @@
         }
       }
 
-      /* Inline Quick-Add Bar */
       .quick-add-bar {
         display: flex;
         align-items: center;
@@ -521,11 +549,12 @@
         border: 1px solid var(--hairline);
         border-radius: 14px;
         padding: 6px 8px 6px 14px;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
       }
 
-      .quick-add-bar input {
+      .quick-add-bar input[type="text"] {
         flex: 1;
+        min-width: 0;
         background: transparent;
         border: none;
         outline: none;
@@ -535,8 +564,20 @@
         padding: 6px 0;
       }
 
-      .quick-add-bar input::placeholder {
+      .quick-add-bar input[type="text"]::placeholder {
         color: var(--muted);
+      }
+
+      .date-chip-input {
+        background: var(--pill);
+        border: 1px solid var(--hairline);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 6px 8px;
+        max-width: 118px;
+        flex-shrink: 0;
       }
 
       .quick-plus-btn {
@@ -564,6 +605,10 @@
         margin-bottom: 12px;
       }
 
+      .segmented.two-col {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
       .segmented button {
         border: none;
         background: transparent;
@@ -578,6 +623,7 @@
       .segmented button.active {
         background: var(--surface);
         color: var(--text);
+        font-weight: 600;
       }
 
       .task-item {
@@ -586,6 +632,10 @@
         gap: 12px;
         padding: 13px 4px;
         border-bottom: 1px solid var(--hairline);
+      }
+
+      .task-item:last-child {
+        border-bottom: none;
       }
 
       .check-circle {
@@ -619,7 +669,76 @@
         color: var(--muted);
       }
 
-      /* ================= HABITS ================= */
+      /* Task Week Strip & Day Blocks */
+      .task-week-strip {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        margin-bottom: 14px;
+      }
+
+      .task-day-cell {
+        background: var(--surface);
+        border: 1.5px solid var(--hairline);
+        border-radius: 12px;
+        padding: 8px 2px 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        cursor: pointer;
+        color: var(--muted);
+        font-family: var(--mono);
+      }
+
+      .task-day-cell.today {
+        border-color: rgba(88, 76, 63, 0.45);
+      }
+
+      .task-day-cell.selected {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #faf7f0;
+      }
+
+      .task-day-badge {
+        font-size: 10px;
+        padding: 1px 5px;
+        border-radius: 99px;
+        background: var(--pill);
+        color: var(--text);
+        min-height: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .task-day-cell.selected .task-day-badge {
+        background: rgba(250, 247, 240, 0.22);
+        color: #faf7f0;
+      }
+
+      .week-day-group {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+      }
+
+      .week-day-group.active-day {
+        border-color: var(--accent);
+      }
+
+      .week-day-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+        cursor: pointer;
+      }
+
+      /* ================= HABITS (WEEK / MONTH / YEAR) ================= */
       .progress-track {
         height: 6px;
         background: var(--hairline);
@@ -664,6 +783,131 @@
         background: var(--accent);
         border-color: var(--accent);
         color: #faf7f0;
+      }
+
+      /* Habit Month Calendar Grid */
+      .month-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-top: 12px;
+        margin-bottom: 4px;
+        text-align: center;
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .month-cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+      }
+
+      .month-day-btn {
+        aspect-ratio: 1 / 1;
+        border-radius: 7px;
+        border: 1px solid var(--hairline);
+        background: var(--bg);
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .month-day-btn.today {
+        border-color: var(--accent);
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .month-day-btn.done {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #faf7f0;
+      }
+
+      /* Habit Year Heatmap & 12-Month Bars */
+      .year-heatmap-scroll {
+        overflow-x: auto;
+        padding: 6px 0 4px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .year-heatmap {
+        display: grid;
+        grid-template-rows: repeat(7, 10px);
+        grid-auto-flow: column;
+        grid-auto-columns: 10px;
+        gap: 3px;
+        width: max-content;
+      }
+
+      .heat-cell {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background: rgba(58, 49, 38, 0.08);
+      }
+
+      .heat-cell.l1 {
+        background: rgba(88, 76, 63, 0.28);
+      }
+      .heat-cell.l2 {
+        background: rgba(88, 76, 63, 0.52);
+      }
+      .heat-cell.l3 {
+        background: rgba(88, 76, 63, 0.78);
+      }
+      .heat-cell.l4 {
+        background: #584c3f;
+      }
+
+      .year-bars {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 5px;
+        align-items: end;
+        height: 76px;
+        margin-top: 14px;
+        padding-top: 8px;
+      }
+
+      .year-bar-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        height: 100%;
+        justify-content: flex-end;
+      }
+
+      .year-bar-track {
+        width: 100%;
+        height: 54px;
+        background: var(--bg);
+        border: 1px solid var(--hairline);
+        border-radius: 5px;
+        display: flex;
+        align-items: flex-end;
+        overflow: hidden;
+      }
+
+      .year-bar-fill {
+        width: 100%;
+        background: var(--accent);
+        border-radius: 4px 4px 0 0;
+        transition: height 0.3s ease;
+      }
+
+      .year-bar-label {
+        font-family: var(--mono);
+        font-size: 9px;
+        color: var(--muted);
       }
 
       /* Bottom Tab Navigation */
@@ -736,7 +980,7 @@
 
       .empty {
         text-align: center;
-        padding: 38px 12px;
+        padding: 32px 12px;
         font-family: var(--mono);
         font-size: 13px;
         color: var(--muted);
@@ -835,7 +1079,7 @@
 
         <div class="day-divider" id="journalDayDivider">TODAY</div>
 
-        <!-- Inline Canvas Composer (Write directly on the paper) -->
+        <!-- Inline Canvas Composer -->
         <div class="timeline-row" id="inlineComposerRow">
           <div class="time-col" id="liveClockLabel">09:00</div>
           <div>
@@ -876,217 +1120,276 @@
           </div>
         </div>
 
-        <!-- Timeline Entries -->
         <div id="journalFeed"></div>
       </section>
 
-      <!-- ================= TASKS VIEW ================= -->
+      <!-- ================= TASKS VIEW (TODAY + WEEK SCHEDULER) ================= -->
       <section id="view-tasks" class="view">
-        <div class="snoopy-card">
-          <div class="row-between">
-            <div>
-              <span style="font-size: 14px; font-weight: 600"
-                >Daily Progress</span
-              >
-              <span
-                class="mono muted"
-                id="taskDateLabel"
-                style="font-size: 11px; margin-left: 6px"
-              ></span>
-            </div>
-            <span
-              class="mono"
-              id="taskCountLabel"
-              style="font-size: 12px; font-weight: 600"
-              >0 / 0</span
-            >
-          </div>
-
-          <!-- Snoopy Walking Towards Doghouse -->
-          <div class="snoopy-stage" id="snoopyStage">
-            <div class="snoopy-ground"></div>
-            <div
-              class="snoopy-track-fill"
-              id="snoopyTrackFill"
-              style="width: 0%"
-            ></div>
-
-            <div class="snoopy-walker" id="snoopyWalker">
-              <span class="snoopy-heart">♥</span>
-              <svg viewBox="0 0 64 64" width="46" height="46" fill="none">
-                <path
-                  d="M14 42 Q8 38 10 33"
-                  stroke="#221E1A"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M22 48 L19 58 L25 58"
-                  stroke="#221E1A"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  fill="#FFFFFF"
-                />
-                <ellipse
-                  cx="25"
-                  cy="41"
-                  rx="9"
-                  ry="11"
-                  fill="#FFFFFF"
-                  stroke="#221E1A"
-                  stroke-width="2.3"
-                />
-                <ellipse cx="19" cy="40" rx="3" ry="5" fill="#221E1A" />
-                <path
-                  d="M28 48 L32 58 L38 58"
-                  stroke="#221E1A"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  fill="#FFFFFF"
-                />
-                <path
-                  d="M27 36 L35 42"
-                  stroke="#221E1A"
-                  stroke-width="2.3"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M21 31 Q26 33 32 30"
-                  stroke="#B84A39"
-                  stroke-width="3.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M22 24 C22 14, 34 11, 42 15 C49 18, 56 19, 56 24 C56 29, 47 31, 38 30 C32 30, 22 31, 22 24 Z"
-                  fill="#FFFFFF"
-                  stroke="#221E1A"
-                  stroke-width="2.3"
-                />
-                <circle cx="56" cy="23" r="3.2" fill="#221E1A" />
-                <circle cx="40" cy="19" r="1.7" fill="#221E1A" />
-                <path
-                  d="M44 26 Q48 28 51 25"
-                  stroke="#221E1A"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
-                <ellipse
-                  cx="26"
-                  cy="24"
-                  rx="4.5"
-                  ry="8"
-                  transform="rotate(12 26 24)"
-                  fill="#221E1A"
-                />
-              </svg>
-            </div>
-
-            <div class="doghouse-goal" title="Goal">
-              <svg viewBox="0 0 64 72" width="46" height="54" fill="none">
-                <circle
-                  cx="32"
-                  cy="11"
-                  r="4"
-                  fill="#E3B448"
-                  stroke="#221E1A"
-                  stroke-width="1.6"
-                />
-                <path
-                  d="M35 10 L40 9 L35 12"
-                  fill="#E3B448"
-                  stroke="#221E1A"
-                  stroke-width="1.4"
-                />
-                <path
-                  d="M30 7 L28 3 M32 7 L32 2 M34 7 L36 3"
-                  stroke="#221E1A"
-                  stroke-width="1.4"
-                  stroke-linecap="round"
-                />
-                <rect
-                  x="14"
-                  y="34"
-                  width="36"
-                  height="32"
-                  fill="#B84A39"
-                  stroke="#221E1A"
-                  stroke-width="2.2"
-                />
-                <path
-                  d="M25 66 L25 49 C25 44, 39 44, 39 49 L39 66 Z"
-                  fill="#221E1A"
-                />
-                <path
-                  d="M8 36 L32 15 L56 36"
-                  fill="#C85A48"
-                  stroke="#221E1A"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
+        <div class="segmented two-col" id="taskModeSwitch">
+          <button class="active" data-tmode="today">Today</button>
+          <button data-tmode="week">Week</button>
         </div>
 
-        <!-- Inline Quick-Add Task (No Pop-up) -->
-        <div class="quick-add-bar">
-          <input
-            type="text"
-            id="quickTaskInput"
-            placeholder="Add a task for today..."
-            onkeydown="if (event.key === 'Enter') addQuickTask();"
-          />
+        <!-- TODAY SUB-VIEW -->
+        <div id="tasksTodayPane">
+          <div class="snoopy-card">
+            <div class="row-between">
+              <div>
+                <span style="font-size: 14px; font-weight: 600"
+                  >Daily Progress</span
+                >
+                <span
+                  class="mono muted"
+                  id="taskDateLabel"
+                  style="font-size: 11px; margin-left: 6px"
+                ></span>
+              </div>
+              <span
+                class="mono"
+                id="taskCountLabel"
+                style="font-size: 12px; font-weight: 600"
+                >0 / 0</span
+              >
+            </div>
+
+            <div class="snoopy-stage" id="snoopyStage">
+              <div class="snoopy-ground"></div>
+              <div
+                class="snoopy-track-fill"
+                id="snoopyTrackFill"
+                style="width: 0%"
+              ></div>
+
+              <div class="snoopy-walker" id="snoopyWalker">
+                <span class="snoopy-heart">♥</span>
+                <svg viewBox="0 0 64 64" width="46" height="46" fill="none">
+                  <path
+                    d="M14 42 Q8 38 10 33"
+                    stroke="#221E1A"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M22 48 L19 58 L25 58"
+                    stroke="#221E1A"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="#FFFFFF"
+                  />
+                  <ellipse
+                    cx="25"
+                    cy="41"
+                    rx="9"
+                    ry="11"
+                    fill="#FFFFFF"
+                    stroke="#221E1A"
+                    stroke-width="2.3"
+                  />
+                  <ellipse cx="19" cy="40" rx="3" ry="5" fill="#221E1A" />
+                  <path
+                    d="M28 48 L32 58 L38 58"
+                    stroke="#221E1A"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="#FFFFFF"
+                  />
+                  <path
+                    d="M27 36 L35 42"
+                    stroke="#221E1A"
+                    stroke-width="2.3"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M21 31 Q26 33 32 30"
+                    stroke="#B84A39"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M22 24 C22 14, 34 11, 42 15 C49 18, 56 19, 56 24 C56 29, 47 31, 38 30 C32 30, 22 31, 22 24 Z"
+                    fill="#FFFFFF"
+                    stroke="#221E1A"
+                    stroke-width="2.3"
+                  />
+                  <circle cx="56" cy="23" r="3.2" fill="#221E1A" />
+                  <circle cx="40" cy="19" r="1.7" fill="#221E1A" />
+                  <path
+                    d="M44 26 Q48 28 51 25"
+                    stroke="#221E1A"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                  />
+                  <ellipse
+                    cx="26"
+                    cy="24"
+                    rx="4.5"
+                    ry="8"
+                    transform="rotate(12 26 24)"
+                    fill="#221E1A"
+                  />
+                </svg>
+              </div>
+
+              <div class="doghouse-goal" title="Goal">
+                <svg viewBox="0 0 64 72" width="46" height="54" fill="none">
+                  <circle
+                    cx="32"
+                    cy="11"
+                    r="4"
+                    fill="#E3B448"
+                    stroke="#221E1A"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M35 10 L40 9 L35 12"
+                    fill="#E3B448"
+                    stroke="#221E1A"
+                    stroke-width="1.4"
+                  />
+                  <path
+                    d="M30 7 L28 3 M32 7 L32 2 M34 7 L36 3"
+                    stroke="#221E1A"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                  <rect
+                    x="14"
+                    y="34"
+                    width="36"
+                    height="32"
+                    fill="#B84A39"
+                    stroke="#221E1A"
+                    stroke-width="2.2"
+                  />
+                  <path
+                    d="M25 66 L25 49 C25 44, 39 44, 39 49 L39 66 Z"
+                    fill="#221E1A"
+                  />
+                  <path
+                    d="M8 36 L32 15 L56 36"
+                    fill="#C85A48"
+                    stroke="#221E1A"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inline Quick-Add with Optional Schedule Date -->
+          <div class="quick-add-bar">
+            <input
+              type="text"
+              id="quickTaskInput"
+              placeholder="Add a task..."
+              onkeydown="if (event.key === 'Enter') addQuickTask();"
+            />
+            <input
+              type="date"
+              id="quickTaskDate"
+              class="date-chip-input"
+              title="Schedule date"
+            />
+            <button
+              class="quick-plus-btn"
+              onclick="addQuickTask()"
+              title="Add Task"
+            >
+              +
+            </button>
+          </div>
+
+          <div class="segmented" id="taskFilterSwitch">
+            <button class="active" data-filter="all">All</button>
+            <button data-filter="active">To Do</button>
+            <button data-filter="done">Done</button>
+          </div>
+
+          <div id="tasksList"></div>
+        </div>
+
+        <!-- WEEK PLANNER SUB-VIEW -->
+        <div id="tasksWeekPane" style="display: none">
+          <div class="period-nav">
+            <button
+              class="period-nav-btn"
+              onclick="shiftTaskWeek(-1)"
+              title="Previous week"
+            >
+              ‹
+            </button>
+            <div class="period-label" id="taskWeekRangeLabel"></div>
+            <button
+              class="period-nav-btn"
+              onclick="shiftTaskWeek(1)"
+              title="Next week"
+            >
+              ›
+            </button>
+          </div>
+
+          <div class="task-week-strip" id="taskWeekStrip"></div>
+
+          <!-- Inline Quick-Add Bound to Selected Day -->
+          <div class="quick-add-bar">
+            <input
+              type="text"
+              id="weekTaskInput"
+              placeholder="Schedule task..."
+              onkeydown="if (event.key === 'Enter') addWeekTask();"
+            />
+            <button
+              class="quick-plus-btn"
+              onclick="addWeekTask()"
+              title="Schedule Task"
+            >
+              +
+            </button>
+          </div>
+
+          <div id="taskWeekBreakdown"></div>
+        </div>
+      </section>
+
+      <!-- ================= HABITS VIEW (WEEK / MONTH / YEAR) ================= -->
+      <section id="view-habits" class="view">
+        <div class="segmented" id="habitModeSwitch">
+          <button class="active" data-hmode="week">Week</button>
+          <button data-hmode="month">Month</button>
+          <button data-hmode="year">Year</button>
+        </div>
+
+        <div class="period-nav">
           <button
-            class="quick-plus-btn"
-            onclick="addQuickTask()"
-            title="Add Task"
+            class="period-nav-btn"
+            onclick="shiftHabitPeriod(-1)"
+            title="Previous"
           >
-            +
+            ‹
+          </button>
+          <div class="period-label" id="habitPeriodLabel"></div>
+          <button
+            class="period-nav-btn"
+            onclick="shiftHabitPeriod(1)"
+            title="Next"
+          >
+            ›
           </button>
         </div>
 
-        <div class="segmented">
-          <button class="active" data-filter="all">All</button>
-          <button data-filter="active">To Do</button>
-          <button data-filter="done">Done</button>
-        </div>
-
-        <div id="tasksList"></div>
-      </section>
-
-      <!-- ================= HABITS VIEW ================= -->
-      <section id="view-habits" class="view">
-        <div class="card">
-          <div class="row-between">
-            <span class="serif" style="font-size: 18px; font-weight: 600"
-              >This Week</span
-            >
-            <span
-              class="mono"
-              id="weeklyPct"
-              style="font-size: 20px; font-weight: 600; color: var(--accent)"
-              >0%</span
-            >
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" id="weeklyBar" style="width: 0%"></div>
-          </div>
-          <div
-            class="mono muted"
-            id="weekRangeLabel"
-            style="font-size: 11px"
-          ></div>
-        </div>
+        <!-- Overall Progress Summary Card -->
+        <div class="card" id="habitSummaryCard"></div>
 
         <!-- Inline Quick-Add Habit -->
         <div class="quick-add-bar">
           <input
             type="text"
             id="quickHabitInput"
-            placeholder="New weekly habit (e.g., Read 20 pages)..."
+            placeholder="New habit (e.g., Read 20 pages)..."
             onkeydown="if (event.key === 'Enter') addQuickHabit();"
           />
           <button
@@ -1134,11 +1437,24 @@
       );
 
       let currentTab = "journal";
-      let taskFilter = "all";
+
+      // Journal state
       let selectedJournalDate = dayKey(new Date());
       let pendingPhotoDataUrl = null;
       let editingNoteId = null;
+
+      // Tasks state
+      let taskMode = "today"; // "today" | "week"
+      let taskFilter = "all";
+      let taskWeekOffset = 0;
+      let selectedTaskWeekDate = dayKey(new Date());
       let lastTaskCountDone = -1;
+
+      // Habits state
+      let habitMode = "week"; // "week" | "month" | "year"
+      let habitWeekOffset = 0;
+      let habitMonthOffset = 0;
+      let habitYearOffset = 0;
 
       function dayKey(date) {
         const y = date.getFullYear();
@@ -1160,6 +1476,7 @@
             t.date = today;
             changed = true;
           } else if (!t.done && t.date < today) {
+            // Carry uncompleted past tasks forward to today; keep future tasks on their scheduled dates
             t.date = today;
             changed = true;
           }
@@ -1181,6 +1498,7 @@
         mon.setDate(baseDate.getDate() + diffToMon);
         const days = [];
         const labels = ["M", "T", "W", "T", "F", "S", "S"];
+        const shortNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
         const todayStr = dayKey(new Date());
         for (let i = 0; i < 7; i++) {
           const d = new Date(mon);
@@ -1189,13 +1507,20 @@
             date: d,
             key: dayKey(d),
             label: labels[i],
+            shortName: shortNames[i],
             isToday: dayKey(d) === todayStr,
           });
         }
         return days;
       }
 
-      /* ================= JOURNAL RENDER & ACTIONS ================= */
+      function getWeekByOffset(offsetWeeks) {
+        const d = new Date();
+        d.setDate(d.getDate() + offsetWeeks * 7);
+        return getWeekForDate(d);
+      }
+
+      /* ================= JOURNAL ================= */
       function renderJournal() {
         const selDateObj = parseDayKey(selectedJournalDate);
         const week = getWeekForDate(selDateObj);
@@ -1228,17 +1553,16 @@
           .join("");
 
         const divider = document.getElementById("journalDayDivider");
-        if (selectedJournalDate === todayStr) {
-          divider.textContent = "TODAY";
-        } else {
-          divider.textContent = selDateObj
-            .toLocaleDateString(undefined, {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-            })
-            .toUpperCase();
-        }
+        divider.textContent =
+          selectedJournalDate === todayStr
+            ? "TODAY"
+            : selDateObj
+                .toLocaleDateString(undefined, {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                })
+                .toUpperCase();
 
         const now = new Date();
         document.getElementById("liveClockLabel").textContent =
@@ -1338,11 +1662,9 @@
       window.toggleJournalSearch = () => {
         const bar = document.getElementById("journalSearchBar");
         bar.classList.toggle("open");
-        if (bar.classList.contains("open")) {
+        if (bar.classList.contains("open"))
           document.getElementById("journalSearchInput").focus();
-        } else {
-          clearJournalSearch();
-        }
+        else clearJournalSearch();
       };
 
       window.clearJournalSearch = () => {
@@ -1385,8 +1707,9 @@
             const canvas = document.createElement("canvas");
             canvas.width = img.width * scale;
             canvas.height = img.height * scale;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvas
+              .getContext("2d")
+              .drawImage(img, 0, 0, canvas.width, canvas.height);
             callback(canvas.toDataURL("image/jpeg", quality));
           };
           img.src = e.target.result;
@@ -1442,9 +1765,7 @@
         if (!box) return;
         const updated = box.value.trim();
         const entry = state.journal.find((x) => x.id === id);
-        if (entry && updated) {
-          entry.body = updated;
-        }
+        if (entry && updated) entry.body = updated;
         editingNoteId = null;
         save();
       };
@@ -1454,12 +1775,21 @@
         save();
       };
 
-      /* ================= TASKS + SNOOPY RENDER & ACTIONS ================= */
+      /* ================= TASKS (TODAY + WEEK SCHEDULER) ================= */
       function renderTasks() {
         syncDailyTasks();
         const today = dayKey(new Date());
-        const todayTasks = state.tasks.filter((t) => t.date === today);
 
+        document.getElementById("tasksTodayPane").style.display =
+          taskMode === "today" ? "block" : "none";
+        document.getElementById("tasksWeekPane").style.display =
+          taskMode === "week" ? "block" : "none";
+
+        // Keep quick date input defaulted to today if blank
+        const quickDateEl = document.getElementById("quickTaskDate");
+        if (!quickDateEl.value) quickDateEl.value = today;
+
+        const todayTasks = state.tasks.filter((t) => t.date === today);
         const doneCount = todayTasks.filter((t) => t.done).length;
         const total = todayTasks.length;
         const ratio = total ? doneCount / total : 0;
@@ -1474,58 +1804,197 @@
           `${doneCount} / ${total} (${pct}%)`;
 
         if (currentTab === "tasks") {
-          document.getElementById("pageSubtitle").textContent =
-            `${total - doneCount} remaining today`;
+          if (taskMode === "today") {
+            const upcomingCount = state.tasks.filter(
+              (t) => t.date > today && !t.done,
+            ).length;
+            document.getElementById("pageSubtitle").textContent = upcomingCount
+              ? `${total - doneCount} today • ${upcomingCount} scheduled`
+              : `${total - doneCount} remaining today`;
+          } else {
+            const week = getWeekByOffset(taskWeekOffset);
+            const keys = new Set(week.map((d) => d.key));
+            const wkTasks = state.tasks.filter((t) => keys.has(t.date));
+            const wkDone = wkTasks.filter((t) => t.done).length;
+            document.getElementById("pageSubtitle").textContent =
+              `${wkDone} / ${wkTasks.length} done this week`;
+          }
         }
 
-        const stage = document.getElementById("snoopyStage");
-        const stageWidth = stage.clientWidth || 320;
-        const maxWalkPx = Math.max(0, stageWidth - 96);
-        const snoopyX = 8 + ratio * maxWalkPx;
+        // Render Today View + Snoopy
+        if (taskMode === "today") {
+          const stage = document.getElementById("snoopyStage");
+          const stageWidth = stage.clientWidth || 320;
+          const maxWalkPx = Math.max(0, stageWidth - 96);
+          const snoopyX = 8 + ratio * maxWalkPx;
 
-        const walker = document.getElementById("snoopyWalker");
-        const trackFill = document.getElementById("snoopyTrackFill");
-        walker.style.left = `${snoopyX}px`;
-        trackFill.style.width = `${ratio * maxWalkPx}px`;
+          const walker = document.getElementById("snoopyWalker");
+          const trackFill = document.getElementById("snoopyTrackFill");
+          walker.style.left = `${snoopyX}px`;
+          trackFill.style.width = `${ratio * maxWalkPx}px`;
 
-        if (lastTaskCountDone !== -1 && doneCount !== lastTaskCountDone) {
-          walker.classList.remove("walking");
-          void walker.offsetWidth;
-          walker.classList.add("walking");
+          if (lastTaskCountDone !== -1 && doneCount !== lastTaskCountDone) {
+            walker.classList.remove("walking");
+            void walker.offsetWidth;
+            walker.classList.add("walking");
+          }
+          lastTaskCountDone = doneCount;
+          walker.classList.toggle(
+            "celebrate",
+            total > 0 && doneCount === total,
+          );
+
+          const filtered = todayTasks.filter((t) =>
+            taskFilter === "all"
+              ? true
+              : taskFilter === "active"
+                ? !t.done
+                : t.done,
+          );
+
+          const list = document.getElementById("tasksList");
+          if (!filtered.length) {
+            list.innerHTML = `<div class="empty">${total ? "No tasks in this filter." : "No tasks yet today. Type above and tap +."}</div>`;
+          } else {
+            list.innerHTML = filtered
+              .map(
+                (t) => `
+            <div class="task-item">
+              <button class="check-circle ${t.done ? "done" : ""}" onclick="toggleTask('${t.id}')">${t.done ? "✓" : ""}</button>
+              <div class="task-title ${t.done ? "done" : ""}">${escapeHtml(t.title)}</div>
+              <button class="btn-danger" onclick="deleteTask('${t.id}')">×</button>
+            </div>
+          `,
+              )
+              .join("");
+          }
         }
-        lastTaskCountDone = doneCount;
 
-        walker.classList.toggle("celebrate", total > 0 && doneCount === total);
+        // Render Week Scheduler View
+        if (taskMode === "week") {
+          const week = getWeekByOffset(taskWeekOffset);
+          const weekKeys = week.map((d) => d.key);
+          if (!weekKeys.includes(selectedTaskWeekDate)) {
+            selectedTaskWeekDate = week[0].key;
+          }
 
-        const filtered = todayTasks.filter((t) =>
-          taskFilter === "all"
-            ? true
-            : taskFilter === "active"
-              ? !t.done
-              : t.done,
-        );
+          const fmt = (d) =>
+            d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+          document.getElementById("taskWeekRangeLabel").textContent =
+            `${fmt(week[0].date)} – ${fmt(week[6].date)}`;
 
-        const list = document.getElementById("tasksList");
-        if (!filtered.length) {
-          list.innerHTML = `<div class="empty">${total ? "No tasks in this filter." : "No tasks yet today. Type above and tap +."}</div>`;
-          return;
+          document.getElementById("taskWeekStrip").innerHTML = week
+            .map((d) => {
+              const dayTasks = state.tasks.filter((t) => t.date === d.key);
+              const openCount = dayTasks.filter((t) => !t.done).length;
+              const isSel = d.key === selectedTaskWeekDate;
+              return `
+            <button
+              class="task-day-cell ${isSel ? "selected" : ""} ${d.isToday ? "today" : ""}"
+              onclick="selectTaskWeekDate('${d.key}')"
+            >
+              <span style="font-size:10px; opacity:0.85;">${d.label}</span>
+              <span style="font-size:14px; font-weight:600;">${d.date.getDate()}</span>
+              <span class="task-day-badge">${dayTasks.length ? (openCount ? openCount : "✓") : "·"}</span>
+            </button>
+          `;
+            })
+            .join("");
+
+          const selObj = parseDayKey(selectedTaskWeekDate);
+          const selNice =
+            selectedTaskWeekDate === today
+              ? "Today"
+              : selObj.toLocaleDateString(undefined, {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                });
+          document.getElementById("weekTaskInput").placeholder =
+            `Add task for ${selNice}...`;
+
+          // 7-day breakdown cards
+          document.getElementById("taskWeekBreakdown").innerHTML = week
+            .map((d) => {
+              const dayTasks = state.tasks.filter((t) => t.date === d.key);
+              const isSel = d.key === selectedTaskWeekDate;
+              const headerTitle = d.isToday
+                ? `Today · ${d.shortName} ${d.date.getDate()}`
+                : `${d.shortName}, ${d.date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
+
+              return `
+            <div class="week-day-group ${isSel ? "active-day" : ""}">
+              <div class="week-day-header" onclick="selectTaskWeekDate('${d.key}', true)">
+                <span class="mono" style="font-size:12px; font-weight:600; color:${d.isToday ? "var(--accent)" : "var(--text)"};">
+                  ${headerTitle}
+                </span>
+                <span class="mono muted" style="font-size:11px;">
+                  ${dayTasks.length ? `${dayTasks.filter((t) => t.done).length}/${dayTasks.length}` : "+ schedule"}
+                </span>
+              </div>
+              ${
+                dayTasks.length
+                  ? dayTasks
+                      .map(
+                        (t) => `
+                <div class="task-item" style="padding:9px 2px;">
+                  <button class="check-circle ${t.done ? "done" : ""}" onclick="toggleTask('${t.id}')">${t.done ? "✓" : ""}</button>
+                  <div class="task-title ${t.done ? "done" : ""}" style="font-size:14px;">${escapeHtml(t.title)}</div>
+                  <button class="btn-danger" onclick="deleteTask('${t.id}')">×</button>
+                </div>
+              `,
+                      )
+                      .join("")
+                  : isSel
+                    ? `<div class="mono muted" style="font-size:12px; padding:4px 0;">Type above to schedule for this day.</div>`
+                    : ""
+              }
+            </div>
+          `;
+            })
+            .join("");
         }
-
-        list.innerHTML = filtered
-          .map(
-            (t) => `
-        <div class="task-item">
-          <button class="check-circle ${t.done ? "done" : ""}" onclick="toggleTask('${t.id}')">${t.done ? "✓" : ""}</button>
-          <div class="task-title ${t.done ? "done" : ""}">${escapeHtml(t.title)}</div>
-          <button class="btn-danger" onclick="deleteTask('${t.id}')">×</button>
-        </div>
-      `,
-          )
-          .join("");
       }
+
+      window.shiftTaskWeek = (delta) => {
+        taskWeekOffset += delta;
+        const week = getWeekByOffset(taskWeekOffset);
+        selectedTaskWeekDate =
+          taskWeekOffset === 0 ? dayKey(new Date()) : week[0].key;
+        renderTasks();
+      };
+
+      window.selectTaskWeekDate = (key, focusInput = false) => {
+        selectedTaskWeekDate = key;
+        renderTasks();
+        if (focusInput) {
+          const inp = document.getElementById("weekTaskInput");
+          inp.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => inp.focus(), 120);
+        }
+      };
 
       window.addQuickTask = () => {
         const input = document.getElementById("quickTaskInput");
+        const dateInput = document.getElementById("quickTaskDate");
+        const title = input.value.trim();
+        if (!title) return;
+
+        const scheduledDate = dateInput.value || dayKey(new Date());
+        state.tasks.unshift({
+          id: crypto.randomUUID(),
+          title,
+          notes: "",
+          done: false,
+          date: scheduledDate,
+        });
+        input.value = "";
+        dateInput.value = dayKey(new Date());
+        save();
+      };
+
+      window.addWeekTask = () => {
+        const input = document.getElementById("weekTaskInput");
         const title = input.value.trim();
         if (!title) return;
         state.tasks.unshift({
@@ -1533,7 +2002,7 @@
           title,
           notes: "",
           done: false,
-          date: dayKey(new Date()),
+          date: selectedTaskWeekDate,
         });
         input.value = "";
         save();
@@ -1543,7 +2012,6 @@
         const t = state.tasks.find((x) => x.id === id);
         if (t) {
           t.done = !t.done;
-          t.date = dayKey(new Date());
           save();
         }
       };
@@ -1553,24 +2021,51 @@
         save();
       };
 
-      /* ================= HABITS RENDER & ACTIONS ================= */
+      /* ================= HABITS (WEEK / MONTH / YEAR) ================= */
       function renderHabits() {
-        const week = getWeekForDate(new Date());
-        const weekKeys = new Set(week.map((d) => d.key));
-        const fmt = (d) =>
-          d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
-        document.getElementById("weekRangeLabel").textContent =
-          `${fmt(week[0].date)} – ${fmt(week[6].date)}`;
+        const summaryEl = document.getElementById("habitSummaryCard");
+        const listEl = document.getElementById("habitsList");
+        const periodLabelEl = document.getElementById("habitPeriodLabel");
+        const today = new Date();
+        const todayStr = dayKey(today);
 
-        let totalDone = 0;
-        const list = document.getElementById("habitsList");
-        if (!state.habits.length) {
-          list.innerHTML = `<div class="empty">No habits yet. Add one above to track your week.</div>`;
-        } else {
-          list.innerHTML = state.habits
+        if (habitMode === "week") {
+          const week = getWeekByOffset(habitWeekOffset);
+          const weekKeys = new Set(week.map((d) => d.key));
+          const fmt = (d) =>
+            d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+          periodLabelEl.textContent = `${fmt(week[0].date)} – ${fmt(week[6].date)}`;
+
+          let totalDone = 0;
+          state.habits.forEach((h) => {
+            totalDone += h.days.filter((k) => weekKeys.has(k)).length;
+          });
+          const pct = state.habits.length
+            ? Math.round((totalDone / (state.habits.length * 7)) * 100)
+            : 0;
+
+          summaryEl.innerHTML = `
+          <div class="row-between">
+            <span class="serif" style="font-size:18px; font-weight:600;">${habitWeekOffset === 0 ? "This Week" : "Weekly Summary"}</span>
+            <span class="mono" style="font-size:20px; font-weight:600; color:var(--accent);">${pct}%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <div class="mono muted" style="font-size:11px;">${totalDone} of ${state.habits.length * 7} check-ins</div>
+        `;
+
+          if (currentTab === "habits") {
+            document.getElementById("pageSubtitle").textContent =
+              `${pct}% (${habitWeekOffset === 0 ? "this week" : periodLabelEl.textContent})`;
+          }
+
+          if (!state.habits.length) {
+            listEl.innerHTML = `<div class="empty">No habits yet. Add one above to track your progress.</div>`;
+            return;
+          }
+
+          listEl.innerHTML = state.habits
             .map((h) => {
               const doneThisWeek = h.days.filter((k) => weekKeys.has(k)).length;
-              totalDone += doneThisWeek;
               return `
             <div class="card">
               <div class="row-between">
@@ -1593,22 +2088,248 @@
                   })
                   .join("")}
               </div>
-            </div>`;
+            </div>
+          `;
             })
             .join("");
+          return;
         }
 
-        const pct = state.habits.length
-          ? Math.round((totalDone / (state.habits.length * 7)) * 100)
+        if (habitMode === "month") {
+          const target = new Date(
+            today.getFullYear(),
+            today.getMonth() + habitMonthOffset,
+            1,
+          );
+          const year = target.getFullYear();
+          const month = target.getMonth();
+          const daysInMonth = new Date(year, month + 1, 0).getDate();
+          const firstOffset = (target.getDay() + 6) % 7; // Mon=0 .. Sun=6
+          const monthPrefix = `${year}-${String(month + 1).padStart(2, "0")}-`;
+
+          periodLabelEl.textContent = target.toLocaleDateString(undefined, {
+            month: "long",
+            year: "numeric",
+          });
+
+          let totalDone = 0;
+          state.habits.forEach((h) => {
+            totalDone += h.days.filter((k) => k.startsWith(monthPrefix)).length;
+          });
+
+          // Use elapsed days if viewing current month, full month otherwise
+          const denomDays =
+            year === today.getFullYear() && month === today.getMonth()
+              ? today.getDate()
+              : daysInMonth;
+          const possible = state.habits.length * denomDays;
+          const pct = possible
+            ? Math.min(100, Math.round((totalDone / possible) * 100))
+            : 0;
+
+          summaryEl.innerHTML = `
+          <div class="row-between">
+            <span class="serif" style="font-size:18px; font-weight:600;">Monthly Pace</span>
+            <span class="mono" style="font-size:20px; font-weight:600; color:var(--accent);">${pct}%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <div class="mono muted" style="font-size:11px;">${totalDone} check-ins across ${denomDays} ${denomDays === 1 ? "day" : "days"}</div>
+        `;
+
+          if (currentTab === "habits") {
+            document.getElementById("pageSubtitle").textContent =
+              `${pct}% in ${target.toLocaleDateString(undefined, { month: "short" })}`;
+          }
+
+          if (!state.habits.length) {
+            listEl.innerHTML = `<div class="empty">No habits yet. Add one above to see monthly calendars.</div>`;
+            return;
+          }
+
+          listEl.innerHTML = state.habits
+            .map((h) => {
+              const doneSet = new Set(
+                h.days.filter((k) => k.startsWith(monthPrefix)),
+              );
+              const hPct = Math.min(
+                100,
+                Math.round((doneSet.size / denomDays) * 100),
+              );
+              let cells = "";
+              for (let b = 0; b < firstOffset; b++) cells += `<div></div>`;
+              for (let day = 1; day <= daysInMonth; day++) {
+                const key = `${monthPrefix}${String(day).padStart(2, "0")}`;
+                const done = doneSet.has(key);
+                const isToday = key === todayStr;
+                cells += `
+              <button
+                class="month-day-btn ${done ? "done" : ""} ${isToday ? "today" : ""}"
+                onclick="toggleHabitDay('${h.id}', '${key}')"
+              >${day}</button>
+            `;
+              }
+
+              return `
+            <div class="card">
+              <div class="row-between">
+                <div>
+                  <div class="serif" style="font-size:17px; font-weight:600;">${escapeHtml(h.title)}</div>
+                  <div class="mono muted" style="font-size:11px; margin-top:2px;">${doneSet.size} / ${daysInMonth} days · ${hPct}% pace</div>
+                </div>
+                <button class="btn-danger" onclick="deleteHabit('${h.id}')">Delete</button>
+              </div>
+              <div class="month-weekdays">
+                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+              </div>
+              <div class="month-cal-grid">${cells}</div>
+            </div>
+          `;
+            })
+            .join("");
+          return;
+        }
+
+        // YEAR VIEW
+        const year = today.getFullYear() + habitYearOffset;
+        const yearPrefix = `${year}-`;
+        periodLabelEl.textContent = `${year}`;
+
+        const startOfYear = new Date(year, 0, 1);
+        const endOfYear = new Date(year, 11, 31);
+        const totalDaysInYear =
+          Math.round((endOfYear - startOfYear) / 86400000) + 1;
+        const daysElapsed =
+          year === today.getFullYear()
+            ? Math.round(
+                (new Date(year, today.getMonth(), today.getDate()) -
+                  startOfYear) /
+                  86400000,
+              ) + 1
+            : year < today.getFullYear()
+              ? totalDaysInYear
+              : 0;
+
+        // Map dayKey -> number of habits completed that day
+        const dailyCounts = {};
+        let totalYearCheckins = 0;
+        state.habits.forEach((h) => {
+          h.days.forEach((k) => {
+            if (k.startsWith(yearPrefix)) {
+              dailyCounts[k] = (dailyCounts[k] || 0) + 1;
+              totalYearCheckins++;
+            }
+          });
+        });
+
+        const activeDays = Object.keys(dailyCounts).length;
+        const possibleYear = state.habits.length * daysElapsed;
+        const yearPct = possibleYear
+          ? Math.min(100, Math.round((totalYearCheckins / possibleYear) * 100))
           : 0;
-        document.getElementById("weeklyPct").textContent = `${pct}%`;
-        document.getElementById("weeklyBar").style.width = `${pct}%`;
+
+        // Build 52-week ink heatmap aligned to Monday
+        const startPad = (startOfYear.getDay() + 6) % 7;
+        let heatCells = "";
+        for (let p = 0; p < startPad; p++) {
+          heatCells += `<div class="heat-cell" style="background:transparent;"></div>`;
+        }
+        for (let i = 0; i < totalDaysInYear; i++) {
+          const d = new Date(year, 0, 1 + i);
+          const k = dayKey(d);
+          const c = dailyCounts[k] || 0;
+          let lvl = "";
+          if (c > 0 && state.habits.length) {
+            const r = c / state.habits.length;
+            lvl = r >= 0.85 ? "l4" : r >= 0.55 ? "l3" : r >= 0.25 ? "l2" : "l1";
+          }
+          heatCells += `<div class="heat-cell ${lvl}" title="${k}: ${c} done"></div>`;
+        }
+
+        summaryEl.innerHTML = `
+        <div class="row-between">
+          <span class="serif" style="font-size:18px; font-weight:600;">${year} Overview</span>
+          <span class="mono" style="font-size:20px; font-weight:600; color:var(--accent);">${yearPct}%</span>
+        </div>
+        <div class="mono muted" style="font-size:11px; margin-top:4px;">
+          ${totalYearCheckins} total check-ins · ${activeDays} active days
+        </div>
+        <div class="year-heatmap-scroll">
+          <div class="year-heatmap">${heatCells}</div>
+        </div>
+      `;
 
         if (currentTab === "habits") {
           document.getElementById("pageSubtitle").textContent =
-            `${pct}% this week`;
+            `${yearPct}% in ${year}`;
         }
+
+        if (!state.habits.length) {
+          listEl.innerHTML = `<div class="empty">No habits yet. Add one above to track your year.</div>`;
+          return;
+        }
+
+        const monthInitials = [
+          "J",
+          "F",
+          "M",
+          "A",
+          "M",
+          "J",
+          "J",
+          "A",
+          "S",
+          "O",
+          "N",
+          "D",
+        ];
+        listEl.innerHTML = state.habits
+          .map((h) => {
+            const yearDays = h.days.filter((k) => k.startsWith(yearPrefix));
+            const hYearPct = daysElapsed
+              ? Math.min(100, Math.round((yearDays.length / daysElapsed) * 100))
+              : 0;
+
+            const barsHtml = monthInitials
+              .map((lbl, mIdx) => {
+                const mPrefix = `${year}-${String(mIdx + 1).padStart(2, "0")}-`;
+                const mDaysTotal = new Date(year, mIdx + 1, 0).getDate();
+                const mDone = yearDays.filter((k) =>
+                  k.startsWith(mPrefix),
+                ).length;
+                const mPct = Math.round((mDone / mDaysTotal) * 100);
+                return `
+            <div class="year-bar-col" title="${lbl}: ${mDone}/${mDaysTotal}">
+              <div class="year-bar-track">
+                <div class="year-bar-fill" style="height:${mPct}%"></div>
+              </div>
+              <span class="year-bar-label">${lbl}</span>
+            </div>
+          `;
+              })
+              .join("");
+
+            return `
+          <div class="card">
+            <div class="row-between">
+              <div>
+                <div class="serif" style="font-size:17px; font-weight:600;">${escapeHtml(h.title)}</div>
+                <div class="mono muted" style="font-size:11px; margin-top:2px;">${yearDays.length} days completed · ${hYearPct}% pace</div>
+              </div>
+              <button class="btn-danger" onclick="deleteHabit('${h.id}')">Delete</button>
+            </div>
+            <div class="year-bars">${barsHtml}</div>
+          </div>
+        `;
+          })
+          .join("");
       }
+
+      window.shiftHabitPeriod = (delta) => {
+        if (habitMode === "week") habitWeekOffset += delta;
+        else if (habitMode === "month") habitMonthOffset += delta;
+        else habitYearOffset += delta;
+        renderHabits();
+      };
 
       window.addQuickHabit = () => {
         const input = document.getElementById("quickHabitInput");
@@ -1692,6 +2413,7 @@
           .classList.toggle("show", currentTab === "journal");
       }
 
+      // Main Bottom Tabs
       document.querySelectorAll("nav.tabs button").forEach((btn) => {
         btn.addEventListener("click", () => {
           currentTab = btn.dataset.tab;
@@ -1716,25 +2438,62 @@
         });
       });
 
-      document.querySelectorAll(".segmented button").forEach((btn) => {
+      // Tasks Mode Switch (Today | Week)
+      document.querySelectorAll("#taskModeSwitch button").forEach((btn) => {
         btn.addEventListener("click", () => {
-          taskFilter = btn.dataset.filter;
+          taskMode = btn.dataset.tmode;
           document
-            .querySelectorAll(".segmented button")
+            .querySelectorAll("#taskModeSwitch button")
             .forEach((b) => b.classList.remove("active"));
           btn.classList.add("active");
           renderTasks();
         });
       });
 
+      // Tasks Filter Switch (All | To Do | Done)
+      document.querySelectorAll("#taskFilterSwitch button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          taskFilter = btn.dataset.filter;
+          document
+            .querySelectorAll("#taskFilterSwitch button")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderTasks();
+        });
+      });
+
+      // Habits Mode Switch (Week | Month | Year)
+      document.querySelectorAll("#habitModeSwitch button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          habitMode = btn.dataset.hmode;
+          document
+            .querySelectorAll("#habitModeSwitch button")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderHabits();
+        });
+      });
+
+      // Top "Today" button resets whichever tab you are currently viewing
       document.getElementById("todayJumpBtn").addEventListener("click", () => {
-        selectedJournalDate = dayKey(new Date());
+        const todayStr = dayKey(new Date());
+        if (currentTab === "journal") {
+          selectedJournalDate = todayStr;
+        } else if (currentTab === "tasks") {
+          taskWeekOffset = 0;
+          selectedTaskWeekDate = todayStr;
+          document.getElementById("quickTaskDate").value = todayStr;
+        } else if (currentTab === "habits") {
+          habitWeekOffset = 0;
+          habitMonthOffset = 0;
+          habitYearOffset = 0;
+        }
         render();
       });
 
       document.getElementById("monthLabelBtn").addEventListener("click", () => {
         selectedJournalDate = dayKey(new Date());
-        render();
+        renderJournal();
       });
 
       document
